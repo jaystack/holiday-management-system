@@ -54,7 +54,11 @@ class SignUpExample extends PureComponent {
             onSubmit={this.handleFormSend}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+              >
                 <TextField
                   autoComplete="fname"
                   name="firstName"
@@ -68,7 +72,11 @@ class SignUpExample extends PureComponent {
                   onChange={this.handleOnChange('firstName')}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+              >
                 <TextField
                   variant="outlined"
                   required

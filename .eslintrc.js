@@ -25,12 +25,13 @@ module.exports = {
   ],
   rules: {
     'react/jsx-filename-extension': [1, { 'extensions': ['.js', '.jsx'] }],
-    'comma-dangle': 0,
-    'arrow-parens': ["error", "as-needed"],
+    'arrow-parens': [2, "as-needed"],
     'consistent-return': 0,
-    'max-len': ["error", { "code": 175 }],
-    'no-console': ["warn"],
+    'max-len': [2, { "code": 175 }],
+    'no-console': [1],
     'react/no-array-index-key': 0,
-    'react/prop-types': 0
+    'react/prop-types': 1,
+    'react/jsx-max-props-per-line': [2, { "maximum": 2 }],
+    'comma-dangle': [2, 'only-multiline']
   },
 };
