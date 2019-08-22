@@ -14,5 +14,6 @@ export default makeStyles(theme => ({
   },
   drawerPaper: {
     width: drawerWidth,
-  }
+  },
+  toolbar: theme.mixins.toolbar
 }));
