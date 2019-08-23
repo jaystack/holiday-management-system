@@ -10,12 +10,11 @@ import Menu from '@material-ui/core/Menu';
 import { withStyles } from '@material-ui/core/styles';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Button from '@material-ui/core/Button';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import MenuItem from '@material-ui/core/MenuItem';
 import LoguoutIcon from '@material-ui/icons/ExitToApp';
 
 import useStyles from './app-bar.styles';
@@ -39,17 +38,6 @@ const StyledMenu = withStyles({
     {...props}
   />
 ));
-const StyledMenuItem = withStyles(theme => ({
-  root: {
-    '&:focus': {
-      backgroundColor: theme.palette.primary.main,
-      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-        color: theme.palette.common.white,
-      },
-    },
-  },
-}))(MenuItem);
-
 const AppBar = ({ toggleMobileDrawer }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const classes = useStyles();
@@ -102,26 +90,26 @@ const AppBar = ({ toggleMobileDrawer }) => {
         >
           <AccountCircle />
         </IconButton>
-          <StyledMenu
-            id="customized-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            <StyledMenuItem>
-              <ListItemIcon>
-                <AccountCircle />
-              </ListItemIcon>
-              <ListItemText primary="Profile" />
-            </StyledMenuItem>
-            <StyledMenuItem>
-              <ListItemIcon>
-                <LoguoutIcon />
-              </ListItemIcon>
-              <ListItemText primary="Logout" />
-            </StyledMenuItem>
-          </StyledMenu>
+        <StyledMenu
+          id="customized-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem>
+            <ListItemIcon>
+              <AccountCircle />
+            </ListItemIcon>
+            <ListItemText primary="Profile" />
+          </MenuItem>
+          <MenuItem>
+            <ListItemIcon>
+              <LoguoutIcon />
+            </ListItemIcon>
+            <ListItemText primary="Logout" />
+          </MenuItem>
+        </StyledMenu>
       </Toolbar>
     </MaterialAppBar>
   );
