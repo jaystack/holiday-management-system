@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import MaterialAppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -58,6 +59,10 @@ const AppBar = ({ toggleMobileDrawer }) => {
       </Toolbar>
     </MaterialAppBar>
   );
+};
+
+AppBar.propTypes = {
+  toggleMobileDrawer: PropTypes.func.isRequired,
 };
 
 export default AppBar;
