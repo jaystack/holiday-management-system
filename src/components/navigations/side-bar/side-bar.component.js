@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
@@ -65,6 +66,11 @@ const SideBar = ({ isMobileDrawerOpened, toggleMobileDrawer }) => {
       </Hidden>
     </nav>
   );
+};
+
+SideBar.propTypes = {
+  isMobileDrawerOpened: PropTypes.bool.isRequired,
+  toggleMobileDrawer: PropTypes.func.isRequired,
 };
 
 export default SideBar;
