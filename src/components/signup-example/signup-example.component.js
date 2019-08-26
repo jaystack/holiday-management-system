@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -43,7 +42,7 @@ class SignUpExample extends PureComponent {
         <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
-            <FontAwesomeIcon icon="check" />
+            <p>i</p>
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign up
