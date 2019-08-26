@@ -38,7 +38,7 @@ const AppBar = ({ toggleMobileDrawer }) => {
         <Typography variant="h6" noWrap>
           Dashboard
         </Typography>
-        <div className={classes.grow}/>
+        <div className={classes.grow} />
         <IconButton color="inherit">
           <Badge badgeContent={3} color="secondary">
             <NotificationsIcon />
