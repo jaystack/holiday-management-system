@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Menu from '@material-ui/core/Menu';
 import MaterialAppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Badge from '@material-ui/core/Badge';
 import Hidden from '@material-ui/core/Hidden';
-import Menu from '@material-ui/core/Menu';
-import { withStyles } from '@material-ui/core/styles';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -19,40 +18,13 @@ import LoguoutIcon from '@material-ui/icons/ExitToApp';
 
 import useStyles from './app-bar.styles';
 
-const StyledMenu = withStyles({
-  paper: {
-    border: '1px solid #d3d4d5',
-  },
-})(props => (
-  <Menu
-    elevation={0}
-    getContentAnchorEl={null}
-    anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'center',
-    }}
-    transformOrigin={{
-      vertical: 'top',
-      horizontal: 'center',
-    }}
-    {...props}
-  />
-));
 const AppBar = ({ toggleMobileDrawer }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [userAnchorEl, setUserAnchorEl] = React.useState(null);
   const classes = useStyles();
-  function handleClick(event) {
-    setAnchorEl(event.currentTarget);
-  }
-
-  function handleClose() {
-    setAnchorEl(null);
-  }
+  const handleUserClick = e => setUserAnchorEl(e.currentTarget);
+  const handleUserClose = () => setUserAnchorEl(null);
   return (
-    <MaterialAppBar
-      position="fixed"
-      className={classes.appBar}
-    >
+    <MaterialAppBar position="fixed" className={classes.appBar}>
       <Toolbar>
         <Hidden smUp implementation="css">
           <IconButton
@@ -63,22 +35,12 @@ const AppBar = ({ toggleMobileDrawer }) => {
             <MenuIcon />
           </IconButton>
         </Hidden>
-        <Typography
-          variant="h6"
-          noWrap
-        >
+        <Typography variant="h6" noWrap>
           Dashboard
         </Typography>
-        <div
-          className={classes.grow}
-        />
-        <IconButton
-          color="inherit"
-        >
-          <Badge
-            badgeContent={3}
-            color="secondary"
-          >
+        <div className={classes.grow}/>
+        <IconButton color="inherit">
+          <Badge badgeContent={3} color="secondary">
             <NotificationsIcon />
           </Badge>
         </IconButton>
@@ -86,16 +48,16 @@ const AppBar = ({ toggleMobileDrawer }) => {
           edge="end"
           aria-haspopup="true"
           color="inherit"
-          onClick={handleClick}
+          onClick={handleUserClick}
         >
           <AccountCircle />
         </IconButton>
-        <StyledMenu
-          id="customized-menu"
-          anchorEl={anchorEl}
+        <Menu
+          id="user-menu"
+          anchorEl={userAnchorEl}
           keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
+          open={Boolean(userAnchorEl)}
+          onClose={handleUserClose}
         >
           <MenuItem>
             <ListItemIcon>
@@ -109,7 +71,7 @@ const AppBar = ({ toggleMobileDrawer }) => {
             </ListItemIcon>
             <ListItemText primary="Logout" />
           </MenuItem>
-        </StyledMenu>
+        </Menu>
       </Toolbar>
     </MaterialAppBar>
   );
