@@ -7,6 +7,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+
 import MailIcon from '@material-ui/icons/Mail';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 
@@ -17,7 +18,14 @@ const SideBar = ({ isMobileDrawerOpened, toggleMobileDrawer }) => {
 
   const drawer = (
     <Fragment>
-      <div className={classes.toolbar} />
+      <div className={classes.toolbar}>
+        <img
+          src="/images/js-logo-b.png"
+          alt="JayStack logo"
+          className={classes.logo}
+          draggable={false}
+        />
+      </div>
       <Divider />
       <List>
         {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
