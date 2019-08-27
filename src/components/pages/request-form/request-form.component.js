@@ -15,6 +15,24 @@ import useStyles from './request-form.styles';
 
 const RequestForm = () => {
   const classes = useStyles();
+  /* function handleChange(event) {
+    setValues(oldValues => ({
+      ...oldValues,
+      [event.target.name]: event.target.value,
+    }));
+  } */
+  const names = [
+    'Tom',
+    'Anna',
+    'Daniel',
+    'Cailey',
+  ];
+  const [personName, setPersonName] = React.useState([]);
+
+  function handleChange(event) {
+    setPersonName(event.target.value);
+  }
+
   return (
     <Paper className={classes.paper}>
       <Grid container spacing={3}>
@@ -55,17 +73,18 @@ const RequestForm = () => {
             <InputLabel>Send request to</InputLabel>
             <Select
               multiple
-              value={[]}
+              value={personName}
+              onChange={handleChange}
               input={<Input id="select-multiple-chip" />}
-              renderValue={() => (
+              renderValue={selected => (
                 <div>
-                  {['almafa', 'körtefa'].map(value => (
+                  {selected.map(value => (
                     <Chip key={value} label={value} />
                   ))}
                 </div>
               )}
             >
-              {['asd', 'asd2'].map(name => (
+              {names.map(name => (
                 <MenuItem key={name} value={name}>
                   {name}
                 </MenuItem>
