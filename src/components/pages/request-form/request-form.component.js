@@ -25,12 +25,6 @@ const RequestForm = () => {
       [event.target.name]: event.target.value,
     }));
   }
-  /* function handleChange(event) {
-    setValues(oldValues => ({
-      ...oldValues,
-      [event.target.name]: event.target.value,
-    }));
-  } */
   const names = [
     'Tom',
     'Anna',
@@ -42,6 +36,8 @@ const RequestForm = () => {
   function handleChange(event) {
     setPersonName(event.target.value);
   }
+  const [selectedDate, handleDateChange] = React.useState(new Date());
+  const [selectedDateB, handleDateChangeB] = React.useState(new Date());
 
   return (
     <Paper className={classes.paper}>
@@ -57,7 +53,8 @@ const RequestForm = () => {
             variant="inline"
             label="Start Date"
             format="MM/DD/YYYY"
-            value={new Date()}
+            value={selectedDate}
+            onChange={date => handleDateChange(date)}
           />
         </Grid>
         <Grid
@@ -71,7 +68,8 @@ const RequestForm = () => {
             variant="inline"
             label="End Date"
             format="MM/DD/YYYY"
-            value={new Date()}
+            value={selectedDateB}
+            onChange={date => handleDateChangeB(date)}
           />
         </Grid>
         <Grid
