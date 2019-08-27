@@ -72,9 +72,7 @@ const RequestForm = () => {
         <Grid xs={12} className={classes.padding12}>
           <FormControl className={classes.maxWidth}>
             <InputLabel>Holiday Type</InputLabel>
-            <Select
-              // value={values.age}
-            >
+            <Select>
               <MenuItem value={1}>Normal holiday</MenuItem>
               <MenuItem value={2}>With payment</MenuItem>
               <MenuItem value={3}>Without payment</MenuItem>
