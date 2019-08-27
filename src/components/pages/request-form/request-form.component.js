@@ -49,6 +49,7 @@ const RequestForm = () => {
         >
           <KeyboardDatePicker
             className={classes.fullWidth}
+            required
             autoOk
             variant="inline"
             label="Start Date"
@@ -65,6 +66,7 @@ const RequestForm = () => {
           <KeyboardDatePicker
             className={classes.fullWidth}
             autoOk
+            required
             variant="inline"
             label="End Date"
             format="MM/DD/YYYY"
@@ -81,6 +83,7 @@ const RequestForm = () => {
             <InputLabel>Send request to</InputLabel>
             <Select
               multiple
+              required
               value={personName}
               onChange={handleChange}
               input={<Input id="select-multiple-chip" />}
@@ -109,6 +112,7 @@ const RequestForm = () => {
             <InputLabel>Holiday Type</InputLabel>
             <Select
               value={values.age}
+              required
               onChange={handleChangeB}
               inputProps={{
                 name: 'age',
@@ -132,7 +136,7 @@ const RequestForm = () => {
             placeholder="Description"
             multiline
             className={classes.fullWidth}
-            rows={1}
+            rows={5}
           />
         </Grid>
         <Grid
