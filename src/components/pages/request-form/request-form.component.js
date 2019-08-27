@@ -24,7 +24,7 @@ const RequestForm = () => {
           md={6}
         >
           <KeyboardDatePicker
-            className={classes.maxWidth}
+            className={classes.fullWidth}
             autoOk
             variant="inline"
             label="Start Date"
@@ -38,7 +38,7 @@ const RequestForm = () => {
           md={6}
         >
           <KeyboardDatePicker
-            className={classes.maxWidth}
+            className={classes.fullWidth}
             autoOk
             variant="inline"
             label="End Date"
@@ -46,8 +46,12 @@ const RequestForm = () => {
             value={new Date()}
           />
         </Grid>
-        <Grid xs={12} className={classes.padding12}>
-          <FormControl className={classes.maxWidth}>
+        <Grid
+          item
+          xs={12}
+          className={classes.padding12}
+        >
+          <FormControl fullWidth>
             <InputLabel>Send request to</InputLabel>
             <Select
               multiple
@@ -69,27 +73,39 @@ const RequestForm = () => {
             </Select>
           </FormControl>
         </Grid>
-        <Grid xs={12} className={classes.padding12}>
-          <FormControl className={classes.maxWidth}>
+        <Grid
+          item
+          xs={12}
+          className={classes.padding12}
+        >
+          <FormControl className={classes.fullWidth}>
             <InputLabel>Holiday Type</InputLabel>
-            <Select>
+            <Select value="">
               <MenuItem value={1}>Normal holiday</MenuItem>
               <MenuItem value={2}>With payment</MenuItem>
               <MenuItem value={3}>Without payment</MenuItem>
             </Select>
           </FormControl>
         </Grid>
-        <Grid xs={12} className={classes.padding12}>
+        <Grid
+          item
+          xs={12}
+          className={classes.padding12}
+        >
           <TextField
             id="outlined-textarea"
             label="Description"
             placeholder="Description"
             multiline
-            className={classes.maxWidth}
-            margin="normal"
+            className={classes.fullWidth}
+            rows={1}
           />
         </Grid>
-        <Grid xs={12} className={classes.buttonFix}>
+        <Grid
+          item
+          xs={12}
+          className={classes.buttonFix}
+        >
           <Button
             variant="contained"
             color="primary"

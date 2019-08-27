@@ -6,5 +6,8 @@ export default makeStyles(theme => ({
     height: '100vh',
     overflow: 'auto',
   },
-  toolbar: theme.mixins.toolbar
+  toolbar: theme.mixins.toolbar,
+  container: {
+    marginTop: theme.spacing(3)
+  }
 }));
