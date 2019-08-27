@@ -12,5 +12,8 @@ export default makeStyles(theme => ({
   },
   padding12: {
     padding: 12
+  },
+  buttonFix: {
+    textAlign: 'center',
   }
 }));
