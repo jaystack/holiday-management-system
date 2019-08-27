@@ -87,7 +87,6 @@ const RequestForm = () => {
             multiline
             className={classes.maxWidth}
             margin="normal"
-            variant="outlined"
           />
         </Grid>
         <Grid xs={12} className={classes.buttonFix}>
