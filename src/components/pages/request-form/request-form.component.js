@@ -15,6 +15,16 @@ import useStyles from './request-form.styles';
 
 const RequestForm = () => {
   const classes = useStyles();
+  const [values, setValues] = React.useState({
+    age: '',
+    name: 'hai',
+  });
+  function handleChangeB(event) {
+    setValues(oldValues => ({
+      ...oldValues,
+      [event.target.name]: event.target.value,
+    }));
+  }
   /* function handleChange(event) {
     setValues(oldValues => ({
       ...oldValues,
@@ -99,7 +109,14 @@ const RequestForm = () => {
         >
           <FormControl className={classes.fullWidth}>
             <InputLabel>Holiday Type</InputLabel>
-            <Select value="">
+            <Select
+              value={values.age}
+              onChange={handleChangeB}
+              inputProps={{
+                name: 'age',
+                id: 'age-simple',
+              }}
+            >
               <MenuItem value={1}>Normal holiday</MenuItem>
               <MenuItem value={2}>With payment</MenuItem>
               <MenuItem value={3}>Without payment</MenuItem>
