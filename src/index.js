@@ -3,7 +3,6 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from '@material-ui/styles';
 
-import 'typeface-source-sans-pro';
 import theme from './theme';
 
 import App from './components/App';

@@ -1,4 +1,5 @@
 import { createMuiTheme } from '@material-ui/core/styles';
+import 'source-sans-pro/source-sans-pro.css';
 
 const theme = createMuiTheme({
   palette: {
