@@ -15,16 +15,10 @@ import useStyles from './request-form.styles';
 
 const RequestForm = () => {
   const classes = useStyles();
-  const [values, setValues] = React.useState({
-    age: '',
-    name: 'hai',
-  });
-  function handleChangeB(event) {
-    setValues(oldValues => ({
-      ...oldValues,
-      [event.target.name]: event.target.value,
-    }));
-  }
+  const [holidayType, setHolidayType] = React.useState('');
+  const handleChangeType = event => {
+    setHolidayType(event.target.value);
+  };
   const names = [
     'Tom',
     'Anna',
@@ -33,11 +27,11 @@ const RequestForm = () => {
   ];
   const [personName, setPersonName] = React.useState([]);
 
-  function handleChange(event) {
+  const handleChangeSendTo = event => {
     setPersonName(event.target.value);
-  }
-  const [selectedDate, handleDateChange] = React.useState(new Date());
-  const [selectedDateB, handleDateChangeB] = React.useState(new Date());
+  };
+  const [selectedDateFrom, handleDateChangeFrom] = React.useState(new Date());
+  const [selectedDateTo, handleDateChangeTo] = React.useState(new Date());
 
   return (
     <Paper className={classes.paper}>
@@ -54,8 +48,8 @@ const RequestForm = () => {
             variant="inline"
             label="Start Date"
             format="MM/DD/YYYY"
-            value={selectedDate}
-            onChange={date => handleDateChange(date)}
+            value={selectedDateFrom}
+            onChange={date => handleDateChangeFrom(date)}
           />
         </Grid>
         <Grid
@@ -70,8 +64,8 @@ const RequestForm = () => {
             variant="inline"
             label="End Date"
             format="MM/DD/YYYY"
-            value={selectedDateB}
-            onChange={date => handleDateChangeB(date)}
+            value={selectedDateTo}
+            onChange={date => handleDateChangeTo(date)}
           />
         </Grid>
         <Grid
@@ -85,7 +79,7 @@ const RequestForm = () => {
               multiple
               required
               value={personName}
-              onChange={handleChange}
+              onChange={handleChangeSendTo}
               input={<Input id="select-multiple-chip" />}
               renderValue={selected => (
                 <div>
@@ -111,11 +105,11 @@ const RequestForm = () => {
           <FormControl className={classes.fullWidth}>
             <InputLabel>Holiday Type</InputLabel>
             <Select
-              value={values.age}
+              value={holidayType}
               required
-              onChange={handleChangeB}
+              onChange={handleChangeType}
               inputProps={{
-                name: 'age',
+                name: 'holidayType',
                 id: 'age-simple',
               }}
             >
