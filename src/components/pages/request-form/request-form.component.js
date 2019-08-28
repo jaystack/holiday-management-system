@@ -20,13 +20,16 @@ const names = [
   'Daniel',
   'Cailey',
 ];
-
 const RequestForm = () => {
   const classes = useStyles();
   const [holidayType, setHolidayType] = React.useState('');
   const [personName, setPersonName] = React.useState([]);
   const [selectedDateFrom, handleDateChangeFrom] = React.useState(moment().valueOf());
   const [selectedDateTo, handleDateChangeTo] = React.useState(moment().valueOf());
+  const values = React.useState({
+    note: '',
+  });
+  const handleNotesChange = note => event => { values({ ...values, [note]: event.target.value }); };
   return (
     <Paper className={classes.paper}>
       <Grid container spacing={3}>
@@ -120,8 +123,10 @@ const RequestForm = () => {
             id="outlined-textarea"
             label="Notes"
             multiline
+            value={values.note}
             className={classes.fullWidth}
             rowsMax={10}
+            onChange={handleNotesChange}
           />
         </Grid>
         <Grid
