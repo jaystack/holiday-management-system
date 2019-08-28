@@ -26,10 +26,7 @@ const RequestForm = () => {
   const [personName, setPersonName] = React.useState([]);
   const [selectedDateFrom, handleDateChangeFrom] = React.useState(moment().valueOf());
   const [selectedDateTo, handleDateChangeTo] = React.useState(moment().valueOf());
-  const values = React.useState({
-    note: '',
-  });
-  const handleNotesChange = note => event => { values({ ...values, [note]: event.target.value }); };
+  const [note, handleNotesChange] = React.useState('');
   return (
     <Paper className={classes.paper}>
       <Grid container spacing={3}>
@@ -123,10 +120,10 @@ const RequestForm = () => {
             id="outlined-textarea"
             label="Notes"
             multiline
-            value={values.note}
+            value={note}
             className={classes.fullWidth}
             rowsMax={10}
-            onChange={handleNotesChange}
+            onChange={event => handleNotesChange(event.target.value)}
           />
         </Grid>
         <Grid
