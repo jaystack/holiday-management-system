@@ -27,7 +27,6 @@ const RequestForm = () => {
   const [personName, setPersonName] = React.useState([]);
   const [selectedDateFrom, handleDateChangeFrom] = React.useState(moment().valueOf());
   const [selectedDateTo, handleDateChangeTo] = React.useState(moment().valueOf());
-
   return (
     <Paper className={classes.paper}>
       <Grid container spacing={3}>
@@ -40,6 +39,7 @@ const RequestForm = () => {
             className={classes.fullWidth}
             required
             autoOk
+            minDate={moment().valueOf()}
             variant="inline"
             label="Start Date"
             format="MM/DD/YYYY"
@@ -56,6 +56,7 @@ const RequestForm = () => {
             className={classes.fullWidth}
             autoOk
             required
+            minDate={selectedDateFrom}
             variant="inline"
             label="End Date"
             format="MM/DD/YYYY"
