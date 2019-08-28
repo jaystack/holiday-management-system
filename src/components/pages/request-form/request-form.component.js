@@ -13,23 +13,17 @@ import Button from '@material-ui/core/Button';
 
 import useStyles from './request-form.styles';
 
+const names = [
+  'Tom',
+  'Anna',
+  'Daniel',
+  'Cailey',
+];
+
 const RequestForm = () => {
   const classes = useStyles();
   const [holidayType, setHolidayType] = React.useState('');
-  const handleChangeType = event => {
-    setHolidayType(event.target.value);
-  };
-  const names = [
-    'Tom',
-    'Anna',
-    'Daniel',
-    'Cailey',
-  ];
   const [personName, setPersonName] = React.useState([]);
-
-  const handleChangeSendTo = event => {
-    setPersonName(event.target.value);
-  };
   const [selectedDateFrom, handleDateChangeFrom] = React.useState(new Date());
   const [selectedDateTo, handleDateChangeTo] = React.useState(new Date());
 
@@ -79,7 +73,7 @@ const RequestForm = () => {
               multiple
               required
               value={personName}
-              onChange={handleChangeSendTo}
+              onChange={event => setPersonName(event.target.value)}
               input={<Input id="select-multiple-chip" />}
               renderValue={selected => (
                 <div>
@@ -107,7 +101,7 @@ const RequestForm = () => {
             <Select
               value={holidayType}
               required
-              onChange={handleChangeType}
+              onChange={event => setHolidayType(event.target.value)}
               inputProps={{
                 name: 'holidayType',
                 id: 'age-simple',
