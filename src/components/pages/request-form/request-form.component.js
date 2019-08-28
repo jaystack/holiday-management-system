@@ -103,10 +103,6 @@ const RequestForm = () => {
               value={holidayType}
               required
               onChange={event => setHolidayType(event.target.value)}
-              inputProps={{
-                name: 'holidayType',
-                id: 'age-simple',
-              }}
             >
               <MenuItem value={1}>Normal holiday</MenuItem>
               <MenuItem value={2}>With payment</MenuItem>
@@ -121,11 +117,10 @@ const RequestForm = () => {
         >
           <TextField
             id="outlined-textarea"
-            label="Description"
-            placeholder="Description"
+            label="Notes"
             multiline
             className={classes.fullWidth}
-            rows={5}
+            rowsMax={10}
           />
         </Grid>
         <Grid
