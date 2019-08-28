@@ -10,6 +10,7 @@ import Chip from '@material-ui/core/Chip';
 import Input from '@material-ui/core/Input';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import moment from 'moment';
 
 import useStyles from './request-form.styles';
 
@@ -24,8 +25,8 @@ const RequestForm = () => {
   const classes = useStyles();
   const [holidayType, setHolidayType] = React.useState('');
   const [personName, setPersonName] = React.useState([]);
-  const [selectedDateFrom, handleDateChangeFrom] = React.useState(new Date());
-  const [selectedDateTo, handleDateChangeTo] = React.useState(new Date());
+  const [selectedDateFrom, handleDateChangeFrom] = React.useState(moment().valueOf());
+  const [selectedDateTo, handleDateChangeTo] = React.useState(moment().valueOf());
 
   return (
     <Paper className={classes.paper}>
