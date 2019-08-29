@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { KeyboardDatePicker } from '@material-ui/pickers';
@@ -27,6 +27,9 @@ const RequestForm = () => {
   const [selectedDateFrom, handleDateChangeFrom] = React.useState(moment().valueOf());
   const [selectedDateTo, handleDateChangeTo] = React.useState(moment().valueOf());
   const [note, handleNotesChange] = React.useState('');
+  useEffect(() => {
+    if (selectedDateFrom > selectedDateTo) handleDateChangeTo(selectedDateFrom);
+  }, [selectedDateFrom]);
   return (
     <Paper className={classes.paper}>
       <Grid container spacing={3}>
