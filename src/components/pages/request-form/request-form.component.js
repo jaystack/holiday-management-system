@@ -30,6 +30,7 @@ const RequestForm = () => {
   useEffect(() => {
     if (selectedDateFrom > selectedDateTo) handleDateChangeTo(selectedDateFrom);
   }, [selectedDateFrom]);
+  const shouldDisableDate = day => (day.isoWeekday() === 6 || day.isoWeekday() === 7);
   return (
     <Paper className={classes.paper}>
       <Grid container spacing={3}>
@@ -42,6 +43,7 @@ const RequestForm = () => {
             className={classes.fullWidth}
             required
             autoOk
+            shouldDisableDate={shouldDisableDate}
             minDate={moment().valueOf()}
             variant="inline"
             label="Start Date"
@@ -59,6 +61,7 @@ const RequestForm = () => {
             className={classes.fullWidth}
             autoOk
             required
+            shouldDisableDate={shouldDisableDate}
             minDate={selectedDateFrom}
             variant="inline"
             label="End Date"
