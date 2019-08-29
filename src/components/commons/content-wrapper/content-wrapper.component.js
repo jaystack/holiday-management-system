@@ -1,5 +1,4 @@
 import React from 'react';
-import Container from '@material-ui/core/Container';
 
 import useStyles from './content-wrapper.styles';
 
@@ -8,9 +7,9 @@ const ContentWrapper = ({ children }) => {
   return (
     <main className={classes.content}>
       <div className={classes.toolbar} />
-      <Container maxWidth="sm" className={classes.container}>
+      <div className={classes.container}>
         {children}
-      </Container>
+      </div>
     </main>
   );
 };

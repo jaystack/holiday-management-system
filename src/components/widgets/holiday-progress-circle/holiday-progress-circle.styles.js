@@ -6,6 +6,7 @@ export default makeStyles(theme => ({
   },
   circleContainer: {
     position: 'relative',
+    marginBottom: theme.spacing(2),
   },
   greyCircle: {
     position: 'absolute',

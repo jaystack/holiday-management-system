@@ -18,13 +18,12 @@ const HolidayProgressCircle = ({ maxHolidays, availableHolidays, nextHolidayStar
     <Grid
       container
       justify="center"
-      spacing={2}
+      spacing={0}
       className={classes.container}
     >
       <Grid
         container
         item
-        xs={12}
         justify="center"
         className={classes.circleContainer}
       >
