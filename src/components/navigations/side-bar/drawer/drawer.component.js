@@ -35,7 +35,7 @@ const Drawer = ({ location: { pathname } }) => {
       <Divider />
       <HolidayProgressCircle />
       <Divider />
-      <List className={classes.mainList}>
+      <List className={classes.mainList} disablePadding>
         {PRIMARY_MENU_ITEMS.map(menu => (
           <ListItem
             key={menu.key}
@@ -52,7 +52,7 @@ const Drawer = ({ location: { pathname } }) => {
         ))}
       </List>
       <Divider />
-      <List>
+      <List disablePadding>
         {SECONDARY_MENU_ITEMS.map(menu => (
           <ListItem
             key={menu.key}
