@@ -7,9 +7,10 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-
-import MailIcon from '@material-ui/icons/Mail';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
+import BeachAccess from '@material-ui/icons/BeachAccessOutlined';
+import Dashboard from '@material-ui/icons/DashboardOutlined';
+import Settings from '@material-ui/icons/SettingsApplicationsOutlined';
+import Person from '@material-ui/icons/PersonOutlineOutlined';
 
 import HolidayProgressCircle from '../../widgets/holiday-progress-circle/holiday-progress-circle.container';
 
@@ -32,21 +33,22 @@ const SideBar = ({ isMobileDrawerOpened, toggleMobileDrawer }) => {
       <HolidayProgressCircle />
       <Divider />
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
+        <ListItem button>
+          <ListItemIcon><Dashboard /></ListItemIcon>
+          <ListItemText primary="Dashboard" />
+        </ListItem>
+        <ListItem button selected>
+          <ListItemIcon><BeachAccess /></ListItemIcon>
+          <ListItemText primary="Request Holiday" />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon><Person /></ListItemIcon>
+          <ListItemText primary="Profile" />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon><Settings /></ListItemIcon>
+          <ListItemText primary="Settings" />
+        </ListItem>
       </List>
     </Fragment>
   );
