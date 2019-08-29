@@ -9,7 +9,7 @@ export default makeStyles(theme => ({
   },
   greyCircle: {
     position: 'absolute',
-    color: theme.palette.grey['300']
+    color: theme.palette.background.default
   },
   numberContainer: {
     position: 'absolute',
