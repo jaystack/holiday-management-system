@@ -29,5 +29,8 @@ export default makeStyles(theme => ({
     left: 0,
     right: 0,
     margin: 'auto',
+  },
+  mainList: {
+    flex: 1
   }
 }));

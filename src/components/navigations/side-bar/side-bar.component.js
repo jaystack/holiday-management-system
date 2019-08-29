@@ -11,6 +11,7 @@ import BeachAccess from '@material-ui/icons/BeachAccessOutlined';
 import Dashboard from '@material-ui/icons/DashboardOutlined';
 import Settings from '@material-ui/icons/SettingsApplicationsOutlined';
 import Person from '@material-ui/icons/PersonOutlineOutlined';
+import Mail from '@material-ui/icons/MailOutline';
 
 import HolidayProgressCircle from '../../widgets/holiday-progress-circle/holiday-progress-circle.container';
 
@@ -32,7 +33,7 @@ const SideBar = ({ isMobileDrawerOpened, toggleMobileDrawer }) => {
       <Divider />
       <HolidayProgressCircle />
       <Divider />
-      <List>
+      <List className={classes.mainList}>
         <ListItem button>
           <ListItemIcon><Dashboard /></ListItemIcon>
           <ListItemText primary="Dashboard" />
@@ -48,6 +49,13 @@ const SideBar = ({ isMobileDrawerOpened, toggleMobileDrawer }) => {
         <ListItem button>
           <ListItemIcon><Settings /></ListItemIcon>
           <ListItemText primary="Settings" />
+        </ListItem>
+      </List>
+      <Divider />
+      <List>
+        <ListItem button>
+          <ListItemIcon><Mail /></ListItemIcon>
+          <ListItemText primary="Contact us" />
         </ListItem>
       </List>
     </Fragment>
