@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from '@material-ui/styles';
 
-import theme from './styles/theme';
+import theme from './theme';
 
 import App from './components/App';
 import store from './store/configureStore';
