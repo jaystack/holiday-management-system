@@ -1,12 +1,11 @@
 import { makeStyles } from '@material-ui/styles';
-
-const drawerWidth = 250; // TODO USE CONSTANTS
+import { DRAWER_WITDH } from '../../../constants';
 
 export default makeStyles(theme => ({
   appBar: {
-    marginLeft: drawerWidth,
+    marginLeft: DRAWER_WITDH,
     [theme.breakpoints.up('sm')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
+      width: `calc(100% - ${DRAWER_WITDH}px)`,
     },
   },
   grow: {

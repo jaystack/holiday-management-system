@@ -11,6 +11,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 
+import HolidayProgressCircle from '../../widgets/holiday-progress-circle/holiday-progress-circle.container';
+
 import useStyles from './side-bar.styles';
 
 const SideBar = ({ isMobileDrawerOpened, toggleMobileDrawer }) => {
@@ -26,6 +28,8 @@ const SideBar = ({ isMobileDrawerOpened, toggleMobileDrawer }) => {
           draggable={false}
         />
       </div>
+      <Divider />
+      <HolidayProgressCircle />
       <Divider />
       <List>
         {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (

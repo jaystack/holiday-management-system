@@ -1,6 +1,5 @@
 import { makeStyles } from '@material-ui/styles';
-
-const drawerWidth = 250; // TODO USE CONSTANTS
+import { DRAWER_WITDH } from '../../../constants';
 
 export default makeStyles(theme => ({
   grow: {
@@ -8,12 +7,12 @@ export default makeStyles(theme => ({
   },
   drawer: {
     [theme.breakpoints.up('sm')]: {
-      width: drawerWidth,
+      width: DRAWER_WITDH,
       flexShrink: 0,
     }
   },
   drawerPaper: {
-    width: drawerWidth,
+    width: DRAWER_WITDH,
   },
   toolbar: {
     position: 'relative',
@@ -22,7 +21,7 @@ export default makeStyles(theme => ({
   logo: {
     maxHeight: '100%',
     maxWidth: '100%',
-    width: drawerWidth - 40,
+    width: DRAWER_WITDH - 40,
     height: 'auto',
     position: 'absolute',
     top: 0,
