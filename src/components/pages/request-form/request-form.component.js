@@ -10,6 +10,7 @@ import Chip from '@material-ui/core/Chip';
 import Input from '@material-ui/core/Input';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import moment from 'moment';
 
 import useStyles from './request-form.styles';
@@ -22,8 +23,8 @@ const names = [
 ];
 const RequestForm = () => {
   const classes = useStyles();
-  const [holidayType, setHolidayType] = React.useState('');
-  const [personName, setPersonName] = React.useState([]);
+  const [holidayType, setHolidayType] = React.useState(1);
+  const [sendRequestTo, setSendRequestTo] = React.useState({ value: [], isValid: true });
   const [selectedDateFrom, handleDateChangeFrom] = React.useState(moment().valueOf());
   const [selectedDateTo, handleDateChangeTo] = React.useState(moment().valueOf());
   const [note, handleNotesChange] = React.useState('');
@@ -31,6 +32,16 @@ const RequestForm = () => {
     if (selectedDateFrom > selectedDateTo) handleDateChangeTo(selectedDateFrom);
   }, [selectedDateFrom]);
   const shouldDisableDate = day => (day.isoWeekday() === 6 || day.isoWeekday() === 7);
+  const handleSendClick = () => {
+    if (sendRequestTo.value.length === 0) return setSendRequestTo({ value: sendRequestTo.value, isValid: false });
+    // console.log({
+    //   selectedDateFrom,
+    //   selectedDateTo,
+    //   holidayType,
+    //   note,
+    //   sendRequestTo: sendRequestTo.value
+    // });
+  };
   return (
     <Paper className={classes.paper}>
       <Grid container spacing={3}>
@@ -75,13 +86,13 @@ const RequestForm = () => {
           xs={12}
           className={classes.padding12}
         >
-          <FormControl fullWidth>
+          <FormControl fullWidth error={!sendRequestTo.isValid}>
             <InputLabel>Send request to</InputLabel>
             <Select
               multiple
               required
-              value={personName}
-              onChange={event => setPersonName(event.target.value)}
+              value={sendRequestTo.value}
+              onChange={event => setSendRequestTo({ value: event.target.value, isValid: true })}
               input={<Input id="select-multiple-chip" />}
               renderValue={selected => (
                 <div>
@@ -97,6 +108,7 @@ const RequestForm = () => {
                 </MenuItem>
               ))}
             </Select>
+            {!sendRequestTo.isValid && <FormHelperText>You must select at least one person</FormHelperText>}
           </FormControl>
         </Grid>
         <Grid
@@ -141,6 +153,7 @@ const RequestForm = () => {
             variant="contained"
             color="primary"
             className={classes.button}
+            onClick={handleSendClick}
           >
             Send
           </Button>
