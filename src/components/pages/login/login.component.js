@@ -15,7 +15,7 @@ const Login = () => {
 
   return (
     <Container maxWidth={false}>
-      <Grid container className={classes.mainGrid}>
+      <Grid container className={classes.grid}>
         <Grid
           item
           xs={12}
@@ -26,7 +26,7 @@ const Login = () => {
           <Section>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <div className={classes.imageContainer}>
+                <div className={classes.logoContainer}>
                   <img
                     src="/images/js-logo-b.png"
                     alt="JayStack logo"
@@ -65,7 +65,7 @@ const Login = () => {
                 <Button
                   variant="contained"
                   color="primary"
-                  className={classes.halfWidth}
+                  className={classes.button}
                 >
                   Login
                 </Button>
