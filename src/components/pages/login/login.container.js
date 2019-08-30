@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 
-import LoginPage from './login.component';
+import Login from './login.component';
 
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

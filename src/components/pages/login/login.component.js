@@ -1,21 +1,19 @@
 import React from 'react';
+
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import { FormControl, Typography } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 
 import useStyles from './login.styles';
 
-const LoginPage = () => {
+
+const Login = () => {
   const classes = useStyles();
   return (
-    <Grid
-      container
-      justify="center"
-      alignItems="center"
-      style={{ height: '100vh' }}
-    >
+    <Grid container className={classes.mainGrid}>
       <Grid
         item
         xs={12}
@@ -30,15 +28,18 @@ const LoginPage = () => {
             <Grid
               item
               xs={12}
-              className={classes.imageFix}
             >
-              <img
-                src="/images/js-logo-b.png"
-                alt="JayStack logo"
-                className={classes.logo}
-                draggable={false}
-              />
-              <Typography>Login</Typography>
+              <Typography align="center">
+                <img
+                  src="/images/js-logo-b.png"
+                  alt="JayStack logo"
+                  className={classes.logo}
+                  draggable={false}
+                />
+              </Typography>
+              <Typography align="center">
+                Login
+              </Typography>
             </Grid>
             <Grid
               item
@@ -46,7 +47,7 @@ const LoginPage = () => {
             >
               <FormControl fullWidth>
                 <TextField
-                  id="outlined-email-input"
+                  id="email-input"
                   label="Email"
                   type="email"
                   name="email"
@@ -54,7 +55,7 @@ const LoginPage = () => {
                   margin="normal"
                 />
                 <TextField
-                  id="outlined-password-input"
+                  id="password-input"
                   label="Password"
                   type="password"
                   autoComplete="current-password"
@@ -64,7 +65,7 @@ const LoginPage = () => {
             </Grid>
             <Grid
               item
-              className={classes.buttonFix}
+              className={classes.buttonCentering}
               xs={12}
             >
               <Button
@@ -82,4 +83,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Login;

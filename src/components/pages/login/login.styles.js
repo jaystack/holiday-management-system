@@ -7,20 +7,9 @@ export default makeStyles(theme => ({
   fullWidth: {
     width: '100%'
   },
-  paddingFix: {
-    padding: 12
-  },
-  heading: {
+  buttonCentering: {
     textAlign: 'center',
-    fontSize: '30px',
-    fontWeight: 'bold',
-    fontFamily: 'Manjari, sans-serif',
-    color: '#2A7CC9',
-    margin: 0,
-  },
-  buttonFix: {
-    textAlign: 'center',
-    margin: 10
+    margin: theme.spacing(),
   },
   halfWidth: {
     width: '50%'
@@ -29,7 +18,9 @@ export default makeStyles(theme => ({
     width: 'auto',
     height: 40,
   },
-  imageFix: {
-    textAlign: 'center',
+  mainGrid: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100vh'
   }
 }));
