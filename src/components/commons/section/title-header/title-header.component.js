@@ -16,10 +16,10 @@ const TitleHeader = ({
 
   return (
     <Paper className={clsx(classes.paper, paperClass)}>
-      <Typography className={classes.title} variant="h5">
+      <Typography variant="h5">
         {title}
       </Typography>
-      <Typography className={classes.title} variant="subtitle1">
+      <Typography variant="subtitle1">
         {subTitle}
       </Typography>
     </Paper>

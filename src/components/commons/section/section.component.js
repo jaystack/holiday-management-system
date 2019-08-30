@@ -33,14 +33,14 @@ const Section = ({
           icon={icon}
           title={title}
           subTitle={subTitle}
-          paperClass={clsx(classes.headerPaper, classes[color])}
+          paperClass={clsx(classes.header, classes[color])}
         />
       )}
       {variant && variant === VARIANTS.TITLE && title && (
         <TitleHeader
           title={title}
           subTitle={subTitle}
-          paperClass={clsx(classes.headerPaper, classes[color])}
+          paperClass={clsx(classes.header, classes[color])}
         />
       )}
       {children}
