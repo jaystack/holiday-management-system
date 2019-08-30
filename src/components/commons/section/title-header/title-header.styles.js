@@ -8,4 +8,7 @@ export default makeStyles(theme => ({
     marginBottom: theme.spacing(1),
     padding: theme.spacing(2),
   },
+  subTitle: {
+    opacity: 0.75
+  }
 }));

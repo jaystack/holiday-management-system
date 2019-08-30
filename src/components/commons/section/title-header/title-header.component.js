@@ -19,7 +19,7 @@ const TitleHeader = ({
       <Typography variant="h5">
         {title}
       </Typography>
-      <Typography variant="subtitle1">
+      <Typography variant="subtitle1" className={classes.subTitle}>
         {subTitle}
       </Typography>
     </Paper>
