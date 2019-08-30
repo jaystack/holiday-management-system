@@ -7,14 +7,13 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 
-import { COLORS } from '../section.constants';
 import useStyles from './icon-header.styles';
 
 const IconHeader = ({
   icon: Icon,
   title,
   subTitle,
-  color
+  paperClass
 }) => {
   const classes = useStyles();
 
@@ -22,7 +21,7 @@ const IconHeader = ({
     <Fragment>
       <Grid container>
         <Grid item xs={6}>
-          <Paper className={clsx(classes.iconPaper, classes[color])}>
+          <Paper className={clsx(classes.iconPaper, paperClass)}>
             <Icon fontSize="large" className={classes.icon} />
           </Paper>
         </Grid>
@@ -44,7 +43,11 @@ IconHeader.propTypes = {
   icon: PropTypes.elementType.isRequired,
   title: PropTypes.string.isRequired,
   subTitle: PropTypes.string.isRequired,
-  color: PropTypes.oneOf(Object.values(COLORS)).isRequired,
+  paperClass: PropTypes.string,
+};
+
+IconHeader.defaultProps = {
+  paperClass: ''
 };
 
 export default IconHeader;

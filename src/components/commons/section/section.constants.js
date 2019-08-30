@@ -7,5 +7,6 @@ export const COLORS = {
 
 export const VARIANTS = {
   DEFAULT: 'default',
-  ICON: 'icon'
+  ICON: 'icon',
+  TITLE: 'title'
 };

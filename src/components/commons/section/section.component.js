@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import Paper from '@material-ui/core/Paper';
 
 import IconHeader from './icon-header/icon-header.component';
+import TitleHeader from './title-header/title-header.component';
 
 import { COLORS, VARIANTS } from './section.constants';
 import useStyles from './section.styles';
@@ -21,7 +22,7 @@ const Section = ({
   const paperClasses = clsx(
     classes.paper,
     {
-      [classes.iconHeader]: icon && variant === VARIANTS.ICON
+      [classes.normalHeader]: ((icon && variant === VARIANTS.ICON) || (title && variant === VARIANTS.TITLE))
     }
   );
 
@@ -32,7 +33,14 @@ const Section = ({
           icon={icon}
           title={title}
           subTitle={subTitle}
-          color={color}
+          paperClass={clsx(classes.headerPaper, classes[color])}
+        />
+      )}
+      {variant && variant === VARIANTS.TITLE && title && (
+        <TitleHeader
+          title={title}
+          subTitle={subTitle}
+          paperClass={clsx(classes.headerPaper, classes[color])}
         />
       )}
       {children}
