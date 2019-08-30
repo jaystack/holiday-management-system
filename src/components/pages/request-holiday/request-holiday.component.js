@@ -3,7 +3,6 @@ import moment from 'moment';
 
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -14,6 +13,8 @@ import Input from '@material-ui/core/Input';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import FormHelperText from '@material-ui/core/FormHelperText';
+
+import Section from '../../commons/section/section.component';
 
 import useStyles from './request-holiday.styles';
 
@@ -46,7 +47,7 @@ const RequestHoliday = () => {
   };
   return (
     <Container maxWidth="sm">
-      <Paper className={classes.paper}>
+      <Section>
         <Grid container spacing={3}>
           <Grid
             item
@@ -162,7 +163,7 @@ const RequestHoliday = () => {
             </Button>
           </Grid>
         </Grid>
-      </Paper>
+      </Section>
     </Container>
   );
 };
