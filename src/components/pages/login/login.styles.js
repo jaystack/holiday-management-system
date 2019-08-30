@@ -1,18 +1,16 @@
 import { makeStyles } from '@material-ui/styles';
 
 export default makeStyles(theme => ({
-  paper: {
-    padding: theme.spacing(3, 3),
-  },
-  fullWidth: {
-    width: '100%'
-  },
-  buttonCentering: {
+  buttonContainer: {
     textAlign: 'center',
-    margin: theme.spacing(),
+    margin: theme.spacing(2),
   },
   halfWidth: {
-    width: '50%'
+    width: '50%',
+  },
+  imageContainer: {
+    display: 'flex',
+    justifyContent: 'center',
   },
   logo: {
     width: 'auto',
@@ -21,6 +19,6 @@ export default makeStyles(theme => ({
   mainGrid: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100vh'
-  }
+    height: '100vh',
+  },
 }));
