@@ -6,10 +6,11 @@ export default makeStyles(theme => ({
   },
   circleContainer: {
     position: 'relative',
+    marginBottom: theme.spacing(2),
   },
   greyCircle: {
     position: 'absolute',
-    color: theme.palette.grey['300']
+    color: theme.palette.background.default
   },
   numberContainer: {
     position: 'absolute',

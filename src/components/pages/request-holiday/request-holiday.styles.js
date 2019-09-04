@@ -1,9 +1,6 @@
 import { makeStyles } from '@material-ui/styles';
 
-export default makeStyles(theme => ({
-  paper: {
-    padding: theme.spacing(3, 2)
-  },
+export default makeStyles(() => ({
   fullWidth: {
     width: '100%'
   },
