@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useReducer } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import { KeyboardDatePicker } from '@material-ui/pickers';
@@ -18,39 +19,43 @@ import Section from '../../commons/section/section.component';
 
 import useStyles from './request-holiday.styles';
 
+const initialDateState = { dateFrom: { value: moment(), isValid: true }, dateTo: { value: moment(), isValid: true } };
+const dateReducer = (state, action) => {
+  switch (action.type) {
+    case 'DATE_FROM':
+      return { ...state, dateFrom: { value: action.value, isValid: action.isValid } };
+    case 'DATE_TO':
 
-const RequestHoliday = () => {
+      return { ...state, dateTo: { value: action.value, isValid: action.isValid } };
+    default:
+      throw new Error('no case matched');
+  }
+};
+const RequestHoliday = ({ supervisors }) => {
   const classes = useStyles();
-  const [supervisors] = React.useState([
-    'Tom',
-    'Anna',
-    'Daniel',
-    'Cailey',
-  ]);
   const [holidayType, setHolidayType] = React.useState(1);
   const [sendRequestTo, setSendRequestTo] = React.useState({ value: [], isValid: true });
-  const [selectedDateFrom, setDateFrom] = React.useState({ value: moment(), isValid: true });
-  const [selectedDateTo, setDateTo] = React.useState({ value: moment(), isValid: true });
   const [note, setNote] = React.useState('');
-
+  const [dateState, dispatchDateModification] = useReducer(dateReducer, initialDateState);
   useEffect(() => {
-    if (selectedDateFrom.value > selectedDateTo.value) setDateTo(selectedDateFrom);
-  }, [selectedDateFrom]);
+    if (dateState.dateFrom.value > dateState.dateTo.value) dispatchDateModification({ ...dateState.dateFrom, type: 'DATE_TO' });
+  }, [dateState.dateFrom]);
 
   const shouldDisableDate = day => (day.isoWeekday() === 6 || day.isoWeekday() === 7);
   const handleOnChangeSendRequestTo = event => setSendRequestTo({ value: event.target.value, isValid: true });
   const handleChangeHolidayType = event => setHolidayType(event.target.value);
   const handleChangeNote = event => setNote(event.target.value);
-  const handleDateFromChange = date => setDateFrom({ value: date, isValid: true });
-  const handleDateToChange = date => setDateTo({ value: date, isValid: true });
+  const handleDateChange = name => date => {
+    dispatchDateModification({ type: name, value: date, isValid: true });
+  };
 
   const handleSendClick = () => {
     if (sendRequestTo.value.length === 0) return setSendRequestTo({ value: sendRequestTo.value, isValid: false });
-    if (!selectedDateFrom.value) return setDateFrom({ value: '', isValid: false });
-    if (!selectedDateTo.value) return setDateTo({ value: '', isValid: false });
+    if (!dateState.dateFrom.value) return dispatchDateModification({ type: 'DATE_FROM', value: '', isValid: false });
+    if (!dateState.dateTo.value) return dispatchDateModification({ type: 'DATE_TO', value: '', isValid: false });
     console.log({
-      selectedDateFrom: selectedDateFrom.value,
-      selectedDateTo: selectedDateTo.value,
+      dateFrom: dateState.dateFrom.value,
+      dateTo: dateState.dateTo.value,
       holidayType,
       note,
       sendRequestTo: sendRequestTo.value
@@ -66,6 +71,7 @@ const RequestHoliday = () => {
             md={6}
           >
             <KeyboardDatePicker
+              id="DATE_FROM"
               className={classes.fullWidth}
               required
               autoOk
@@ -74,8 +80,8 @@ const RequestHoliday = () => {
               variant="inline"
               label="Start Date"
               format="MM/DD/YYYY"
-              value={selectedDateFrom.value}
-              onChange={handleDateFromChange}
+              value={dateState.dateFrom.value}
+              onChange={handleDateChange('DATE_FROM')}
               invalidDateMessage="You must select a correct date"
             />
           </Grid>
@@ -85,16 +91,17 @@ const RequestHoliday = () => {
             md={6}
           >
             <KeyboardDatePicker
+              id="DATE_TO"
               className={classes.fullWidth}
               autoOk
               required
               shouldDisableDate={shouldDisableDate}
-              minDate={selectedDateFrom.value}
+              minDate={dateState.dateFrom.value}
               variant="inline"
               label="End Date"
               format="MM/DD/YYYY"
-              value={selectedDateTo.value}
-              onChange={handleDateToChange}
+              value={dateState.dateTo.value}
+              onChange={handleDateChange('DATE_TO')}
               invalidDateMessage="You must select a correct date"
             />
           </Grid>
@@ -180,5 +187,10 @@ const RequestHoliday = () => {
     </Container>
   );
 };
-
+RequestHoliday.propTypes = {
+  supervisors: PropTypes.arrayOf(PropTypes.number)
+};
+RequestHoliday.defaultProps = {
+  supervisors: []
+};
 export default RequestHoliday;

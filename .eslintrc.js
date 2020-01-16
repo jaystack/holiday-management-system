@@ -30,7 +30,7 @@ module.exports = {
     'max-len': [2, { code: 175 }],
     'no-console': 'off',
     'react/no-array-index-key': 0,
-    'react/prop-types': [2, { ignore: ['classes', 'children'] }],
+    'react/prop-types': [2, { ignore: ['classes', 'children','array'] }],
     'react/jsx-max-props-per-line': [2, { maximum: 2 }],
     'comma-dangle': [2, 'only-multiline'],
   },
