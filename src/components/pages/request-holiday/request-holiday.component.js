@@ -18,32 +18,43 @@ import Section from '../../commons/section/section.component';
 
 import useStyles from './request-holiday.styles';
 
-const names = [
-  'Tom',
-  'Anna',
-  'Daniel',
-  'Cailey',
-];
+
 const RequestHoliday = () => {
   const classes = useStyles();
+  const [supervisors] = React.useState([
+    'Tom',
+    'Anna',
+    'Daniel',
+    'Cailey',
+  ]);
   const [holidayType, setHolidayType] = React.useState(1);
   const [sendRequestTo, setSendRequestTo] = React.useState({ value: [], isValid: true });
-  const [selectedDateFrom, handleDateChangeFrom] = React.useState(moment().valueOf());
-  const [selectedDateTo, handleDateChangeTo] = React.useState(moment().valueOf());
-  const [note, handleNotesChange] = React.useState('');
+  const [selectedDateFrom, setDateFrom] = React.useState({ value: moment(), isValid: true });
+  const [selectedDateTo, setDateTo] = React.useState({ value: moment(), isValid: true });
+  const [note, setNote] = React.useState('');
+
   useEffect(() => {
-    if (selectedDateFrom > selectedDateTo) handleDateChangeTo(selectedDateFrom);
+    if (selectedDateFrom.value > selectedDateTo.value) setDateTo(selectedDateFrom);
   }, [selectedDateFrom]);
+
   const shouldDisableDate = day => (day.isoWeekday() === 6 || day.isoWeekday() === 7);
+  const handleOnChangeSendRequestTo = event => setSendRequestTo({ value: event.target.value, isValid: true });
+  const handleChangeHolidayType = event => setHolidayType(event.target.value);
+  const handleChangeNote = event => setNote(event.target.value);
+  const handleDateFromChange = date => setDateFrom({ value: date, isValid: true });
+  const handleDateToChange = date => setDateTo({ value: date, isValid: true });
+
   const handleSendClick = () => {
     if (sendRequestTo.value.length === 0) return setSendRequestTo({ value: sendRequestTo.value, isValid: false });
-    // console.log({
-    //   selectedDateFrom,
-    //   selectedDateTo,
-    //   holidayType,
-    //   note,
-    //   sendRequestTo: sendRequestTo.value
-    // });
+    if (!selectedDateFrom.value) return setDateFrom({ value: '', isValid: false });
+    if (!selectedDateTo.value) return setDateTo({ value: '', isValid: false });
+    console.log({
+      selectedDateFrom: selectedDateFrom.value,
+      selectedDateTo: selectedDateTo.value,
+      holidayType,
+      note,
+      sendRequestTo: sendRequestTo.value
+    });
   };
   return (
     <Container maxWidth="sm">
@@ -63,8 +74,9 @@ const RequestHoliday = () => {
               variant="inline"
               label="Start Date"
               format="MM/DD/YYYY"
-              value={selectedDateFrom}
-              onChange={date => handleDateChangeFrom(date)}
+              value={selectedDateFrom.value}
+              onChange={handleDateFromChange}
+              invalidDateMessage="You must select a correct date"
             />
           </Grid>
           <Grid
@@ -77,12 +89,13 @@ const RequestHoliday = () => {
               autoOk
               required
               shouldDisableDate={shouldDisableDate}
-              minDate={selectedDateFrom}
+              minDate={selectedDateFrom.value}
               variant="inline"
               label="End Date"
               format="MM/DD/YYYY"
-              value={selectedDateTo}
-              onChange={date => handleDateChangeTo(date)}
+              value={selectedDateTo.value}
+              onChange={handleDateToChange}
+              invalidDateMessage="You must select a correct date"
             />
           </Grid>
           <Grid
@@ -96,7 +109,7 @@ const RequestHoliday = () => {
                 multiple
                 required
                 value={sendRequestTo.value}
-                onChange={event => setSendRequestTo({ value: event.target.value, isValid: true })}
+                onChange={handleOnChangeSendRequestTo}
                 input={<Input id="select-multiple-chip" />}
                 renderValue={selected => (
                   <div>
@@ -106,9 +119,9 @@ const RequestHoliday = () => {
                   </div>
                 )}
               >
-                {names.map(name => (
-                  <MenuItem key={name} value={name}>
-                    {name}
+                {supervisors.map(supervisor => (
+                  <MenuItem key={supervisor} value={supervisor}>
+                    {supervisor}
                   </MenuItem>
                 ))}
               </Select>
@@ -125,7 +138,7 @@ const RequestHoliday = () => {
               <Select
                 value={holidayType}
                 required
-                onChange={event => setHolidayType(event.target.value)}
+                onChange={handleChangeHolidayType}
               >
                 <MenuItem value={1}>Normal holiday</MenuItem>
                 <MenuItem value={2}>With payment</MenuItem>
@@ -145,7 +158,7 @@ const RequestHoliday = () => {
               value={note}
               className={classes.fullWidth}
               rowsMax={10}
-              onChange={event => handleNotesChange(event.target.value)}
+              onChange={handleChangeNote}
             />
           </Grid>
           <Grid
