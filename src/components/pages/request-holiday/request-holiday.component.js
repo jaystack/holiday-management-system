@@ -21,52 +21,45 @@ import useStyles from './request-holiday.styles';
 
 const initialState = {
   holidayType: { value: 1, isValid: true },
-  note: { value: '', isValid: true },
+  notes: { value: '', isValid: true },
   dateFrom: { value: moment(), isValid: true },
   dateTo: { value: moment(), isValid: true },
-  sendRequestTo: { value: [], isValid: true }
+  requestedSupervisors: { value: [], isValid: true }
 };
-const dateReducer = (state, action) => {
-  switch (action.type) {
+const reducer = (state, {
+  type, payload
+}) => {
+  console.log(type, payload);
+  switch (type) {
     case 'DATE_FROM':
-      return { ...state, dateFrom: { value: action.value, isValid: action.isValid } };
+      return { ...state, dateFrom: payload };
     case 'DATE_TO':
-      return { ...state, dateTo: { value: action.value, isValid: action.isValid } };
-    case 'CHANGE_STATE':
-      return { ...state, [action.stateToChange]: action.value };
+      return { ...state, dateTo: payload };
     default:
-      return { ...state };
+      return { ...state, [payload.name]: payload };
   }
 };
 const RequestHoliday = ({ supervisors }) => {
   const classes = useStyles();
 
-  const [state, dispatchModification] = useReducer(dateReducer, initialState);
+  const [state, dispatchModification] = useReducer(reducer, initialState);
   useEffect(() => {
     if (state.dateFrom.value > state.dateTo.value) dispatchModification({ ...state.dateFrom, type: 'DATE_TO' });
   }, [state.dateFrom]);
 
   const shouldDisableDate = day => (day.isoWeekday() === 6 || day.isoWeekday() === 7);
-  const handleOnChangeSendRequestTo = event => dispatchModification(
-    {
-      type: 'CHANGE_STATE',
-      stateToChange: 'sendRequestTo',
-      value: { value: event.target.value, isValid: true }
-    }
-  );
-  const handleChangeHolidayType = event => dispatchModification({ type: 'CHANGE_STATE', stateToChange: 'holidayType', value: { value: event.target.value, isValid: true } });
-  const handleChangeNote = event => dispatchModification({ type: 'CHANGE_STATE', stateToChange: 'note', value: { value: event.target.value, isValid: true } });
+  const handleChange = ({ target }) => { dispatchModification({ payload: target, isValid: true }); };
   const handleDateChange = name => date => {
     dispatchModification({ type: name, value: date, isValid: true });
   };
   const validateForm = formData => {
     let isFormValid = true;
-    if (formData.sendRequestTo.value.length === 0) {
+    if (formData.requestedSupervisors.value.length === 0) {
       isFormValid = false;
       dispatchModification({
         type: 'CHANGE_STATE',
-        stateToChange: 'sendRequestTo',
-        value: { value: state.sendRequestTo.value, isValid: false }
+        stateToChange: 'requestedSupervisors',
+        value: { value: state.requestedSupervisors.value, isValid: false }
       });
     }
     if (!formData.dateFrom.value) {
@@ -86,8 +79,8 @@ const RequestHoliday = ({ supervisors }) => {
       dateFrom: state.dateFrom.value,
       dateTo: state.dateTo.value,
       holidayType: state.holidayType,
-      note: state.note,
-      sendRequestTo: state.sendRequestTo.value
+      notes: state.notes,
+      requestedSupervisors: state.requestedSupervisors.value
     });
   };
   return (
@@ -120,7 +113,7 @@ const RequestHoliday = ({ supervisors }) => {
             md={6}
           >
             <KeyboardDatePicker
-              id="DATE_TO"
+              name="DATE_TO"
               className={classes.fullWidth}
               autoOk
               required
@@ -139,13 +132,14 @@ const RequestHoliday = ({ supervisors }) => {
             xs={12}
             className={classes.padding12}
           >
-            <FormControl fullWidth error={!state.sendRequestTo.isValid}>
+            <FormControl fullWidth error={!state.requestedSupervisors.isValid}>
               <InputLabel>Send request to</InputLabel>
               <Select
+                name="requestedSupervisors"
                 multiple
                 required
-                value={state.sendRequestTo.value}
-                onChange={handleOnChangeSendRequestTo}
+                value={state.requestedSupervisors.value}
+                onChange={handleChange}
                 input={<Input id="select-multiple-chip" />}
                 renderValue={selected => (
                   <div>
@@ -161,7 +155,7 @@ const RequestHoliday = ({ supervisors }) => {
                   </MenuItem>
                 ))}
               </Select>
-              {!state.sendRequestTo.isValid && <FormHelperText>You must select at least one person</FormHelperText>}
+              {!state.requestedSupervisors.isValid && <FormHelperText>You must select at least one person</FormHelperText>}
             </FormControl>
           </Grid>
           <Grid
@@ -172,9 +166,10 @@ const RequestHoliday = ({ supervisors }) => {
             <FormControl className={classes.fullWidth}>
               <InputLabel>Holiday Type</InputLabel>
               <Select
+                name="holidayType"
                 value={state.holidayType.value}
                 required
-                onChange={handleChangeHolidayType}
+                onChange={handleChange}
               >
                 <MenuItem value={1}>Normal holiday</MenuItem>
                 <MenuItem value={2}>With payment</MenuItem>
@@ -188,13 +183,14 @@ const RequestHoliday = ({ supervisors }) => {
             className={classes.padding12}
           >
             <TextField
-              id="outlined-textarea"
+              name="notes"
+              type="text"
               label="Notes"
               multiline
-              value={state.note.value}
+              value={state.notes.value}
               className={classes.fullWidth}
               rowsMax={10}
-              onChange={handleChangeNote}
+              onChange={handleChange}
             />
           </Grid>
           <Grid
