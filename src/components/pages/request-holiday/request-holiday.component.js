@@ -19,46 +19,75 @@ import Section from '../../commons/section/section.component';
 
 import useStyles from './request-holiday.styles';
 
-const initialDateState = { dateFrom: { value: moment(), isValid: true }, dateTo: { value: moment(), isValid: true } };
+const initialState = {
+  holidayType: { value: 1, isValid: true },
+  note: { value: '', isValid: true },
+  dateFrom: { value: moment(), isValid: true },
+  dateTo: { value: moment(), isValid: true },
+  sendRequestTo: { value: [], isValid: true }
+};
 const dateReducer = (state, action) => {
   switch (action.type) {
     case 'DATE_FROM':
       return { ...state, dateFrom: { value: action.value, isValid: action.isValid } };
     case 'DATE_TO':
-
       return { ...state, dateTo: { value: action.value, isValid: action.isValid } };
+    case 'CHANGE_STATE':
+      return { ...state, [action.stateToChange]: action.value };
     default:
-      throw new Error('no case matched');
+      return { ...state };
   }
 };
 const RequestHoliday = ({ supervisors }) => {
   const classes = useStyles();
-  const [holidayType, setHolidayType] = React.useState(1);
-  const [sendRequestTo, setSendRequestTo] = React.useState({ value: [], isValid: true });
-  const [note, setNote] = React.useState('');
-  const [dateState, dispatchDateModification] = useReducer(dateReducer, initialDateState);
+
+  const [state, dispatchModification] = useReducer(dateReducer, initialState);
   useEffect(() => {
-    if (dateState.dateFrom.value > dateState.dateTo.value) dispatchDateModification({ ...dateState.dateFrom, type: 'DATE_TO' });
-  }, [dateState.dateFrom]);
+    if (state.dateFrom.value > state.dateTo.value) dispatchModification({ ...state.dateFrom, type: 'DATE_TO' });
+  }, [state.dateFrom]);
 
   const shouldDisableDate = day => (day.isoWeekday() === 6 || day.isoWeekday() === 7);
-  const handleOnChangeSendRequestTo = event => setSendRequestTo({ value: event.target.value, isValid: true });
-  const handleChangeHolidayType = event => setHolidayType(event.target.value);
-  const handleChangeNote = event => setNote(event.target.value);
+  const handleOnChangeSendRequestTo = event => dispatchModification(
+    {
+      type: 'CHANGE_STATE',
+      stateToChange: 'sendRequestTo',
+      value: { value: event.target.value, isValid: true }
+    }
+  );
+  const handleChangeHolidayType = event => dispatchModification({ type: 'CHANGE_STATE', stateToChange: 'holidayType', value: { value: event.target.value, isValid: true } });
+  const handleChangeNote = event => dispatchModification({ type: 'CHANGE_STATE', stateToChange: 'note', value: { value: event.target.value, isValid: true } });
   const handleDateChange = name => date => {
-    dispatchDateModification({ type: name, value: date, isValid: true });
+    dispatchModification({ type: name, value: date, isValid: true });
+  };
+  const validateForm = formData => {
+    let isFormValid = true;
+    if (formData.sendRequestTo.value.length === 0) {
+      isFormValid = false;
+      dispatchModification({
+        type: 'CHANGE_STATE',
+        stateToChange: 'sendRequestTo',
+        value: { value: state.sendRequestTo.value, isValid: false }
+      });
+    }
+    if (!formData.dateFrom.value) {
+      dispatchModification({ type: 'DATE_FROM', value: '', isValid: false });
+      isFormValid = false;
+    }
+    if (!formData.dateTo.value) {
+      dispatchModification({ type: 'DATE_TO', value: '', isValid: false });
+      isFormValid = false;
+    }
+    return isFormValid;
   };
 
   const handleSendClick = () => {
-    if (sendRequestTo.value.length === 0) return setSendRequestTo({ value: sendRequestTo.value, isValid: false });
-    if (!dateState.dateFrom.value) return dispatchDateModification({ type: 'DATE_FROM', value: '', isValid: false });
-    if (!dateState.dateTo.value) return dispatchDateModification({ type: 'DATE_TO', value: '', isValid: false });
+    if (!validateForm(state)) { return; }
     console.log({
-      dateFrom: dateState.dateFrom.value,
-      dateTo: dateState.dateTo.value,
-      holidayType,
-      note,
-      sendRequestTo: sendRequestTo.value
+      dateFrom: state.dateFrom.value,
+      dateTo: state.dateTo.value,
+      holidayType: state.holidayType,
+      note: state.note,
+      sendRequestTo: state.sendRequestTo.value
     });
   };
   return (
@@ -80,7 +109,7 @@ const RequestHoliday = ({ supervisors }) => {
               variant="inline"
               label="Start Date"
               format="MM/DD/YYYY"
-              value={dateState.dateFrom.value}
+              value={state.dateFrom.value}
               onChange={handleDateChange('DATE_FROM')}
               invalidDateMessage="You must select a correct date"
             />
@@ -96,11 +125,11 @@ const RequestHoliday = ({ supervisors }) => {
               autoOk
               required
               shouldDisableDate={shouldDisableDate}
-              minDate={dateState.dateFrom.value}
+              minDate={state.dateFrom.value}
               variant="inline"
               label="End Date"
               format="MM/DD/YYYY"
-              value={dateState.dateTo.value}
+              value={state.dateTo.value}
               onChange={handleDateChange('DATE_TO')}
               invalidDateMessage="You must select a correct date"
             />
@@ -110,12 +139,12 @@ const RequestHoliday = ({ supervisors }) => {
             xs={12}
             className={classes.padding12}
           >
-            <FormControl fullWidth error={!sendRequestTo.isValid}>
+            <FormControl fullWidth error={!state.sendRequestTo.isValid}>
               <InputLabel>Send request to</InputLabel>
               <Select
                 multiple
                 required
-                value={sendRequestTo.value}
+                value={state.sendRequestTo.value}
                 onChange={handleOnChangeSendRequestTo}
                 input={<Input id="select-multiple-chip" />}
                 renderValue={selected => (
@@ -132,7 +161,7 @@ const RequestHoliday = ({ supervisors }) => {
                   </MenuItem>
                 ))}
               </Select>
-              {!sendRequestTo.isValid && <FormHelperText>You must select at least one person</FormHelperText>}
+              {!state.sendRequestTo.isValid && <FormHelperText>You must select at least one person</FormHelperText>}
             </FormControl>
           </Grid>
           <Grid
@@ -143,7 +172,7 @@ const RequestHoliday = ({ supervisors }) => {
             <FormControl className={classes.fullWidth}>
               <InputLabel>Holiday Type</InputLabel>
               <Select
-                value={holidayType}
+                value={state.holidayType.value}
                 required
                 onChange={handleChangeHolidayType}
               >
@@ -162,7 +191,7 @@ const RequestHoliday = ({ supervisors }) => {
               id="outlined-textarea"
               label="Notes"
               multiline
-              value={note}
+              value={state.note.value}
               className={classes.fullWidth}
               rowsMax={10}
               onChange={handleChangeNote}
