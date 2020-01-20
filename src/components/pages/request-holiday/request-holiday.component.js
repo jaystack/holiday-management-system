@@ -29,12 +29,13 @@ const initialState = {
 const reducer = (state, {
   type, value
 }) => {
-  console.log(type, value);
   switch (type) {
     case 'DATE_FROM':
       return { ...state, dateFrom: value };
     case 'DATE_TO':
       return { ...state, dateTo: value };
+    case 'VALIDATE':
+      return value;
     default:
       return { ...state, [value.name]: value };
   }
@@ -50,27 +51,27 @@ const RequestHoliday = ({ supervisors }) => {
   const shouldDisableDate = day => (day.isoWeekday() === 6 || day.isoWeekday() === 7);
   const handleChange = ({ target }) => dispatchModification({ value: { value: target.value, name: target.name, isValid: true } });
   const handleDateChange = name => date => dispatchModification({ type: name, value: { ...date, isValid: true } });
-  const validateForm = formData => {
-    let isFormValid = true;
-    if (formData.requestedSupervisors.value.length === 0) {
-      isFormValid = false;
-      dispatchModification({
-        value: { name: 'requestedSupervisors', value: state.requestedSupervisors.value, isValid: false }
-      });
+  const markInvalidFormData = formData => Object.keys(formData).reduce((accumulator, key) => ({
+    ...accumulator,
+    [key]: {
+      ...formData[key],
+      // eslint-disable-next-line no-nested-ternary
+      isValid: key === 'notes'
+        ? true
+        : formData[key].value === undefined
+          ? false
+          : formData[key].value.length !== 0
     }
-    if (!formData.dateFrom) {
-      dispatchModification({ type: 'DATE_FROM', value: '', isValid: false });
-      isFormValid = false;
-    }
-    if (!formData.dateTo) {
-      dispatchModification({ type: 'DATE_TO', value: '', isValid: false });
-      isFormValid = false;
-    }
-    return isFormValid;
-  };
+  }), {});
+  const isValid = data => Object.values(data).every(element => element.isValid === true);
+
 
   const handleSendClick = () => {
-    if (!validateForm(state)) { return; }
+    const markedFormData = markInvalidFormData(state);
+    if (!isValid(markedFormData)) {
+      dispatchModification({ type: 'VALIDATE', value: markedFormData });
+      return;
+    }
 
     const {
       dateFrom, dateTo, holidayType, notes, requestedSupervisors
