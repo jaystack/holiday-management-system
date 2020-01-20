@@ -27,16 +27,16 @@ const initialState = {
   requestedSupervisors: { value: [], isValid: true }
 };
 const reducer = (state, {
-  type, payload
+  type, value
 }) => {
-  console.log(type, payload);
+  console.log(type, value);
   switch (type) {
     case 'DATE_FROM':
-      return { ...state, dateFrom: payload };
+      return { ...state, dateFrom: value };
     case 'DATE_TO':
-      return { ...state, dateTo: payload };
+      return { ...state, dateTo: value };
     default:
-      return { ...state, [payload.name]: payload };
+      return { ...state, [value.name]: value };
   }
 };
 const RequestHoliday = ({ supervisors }) => {
@@ -48,25 +48,21 @@ const RequestHoliday = ({ supervisors }) => {
   }, [state.dateFrom]);
 
   const shouldDisableDate = day => (day.isoWeekday() === 6 || day.isoWeekday() === 7);
-  const handleChange = ({ target }) => { dispatchModification({ payload: target, isValid: true }); };
-  const handleDateChange = name => date => {
-    dispatchModification({ type: name, value: date, isValid: true });
-  };
+  const handleChange = ({ target }) => dispatchModification({ value: { value: target.value, name: target.name, isValid: true } });
+  const handleDateChange = name => date => dispatchModification({ type: name, value: { ...date, isValid: true } });
   const validateForm = formData => {
     let isFormValid = true;
     if (formData.requestedSupervisors.value.length === 0) {
       isFormValid = false;
       dispatchModification({
-        type: 'CHANGE_STATE',
-        stateToChange: 'requestedSupervisors',
-        value: { value: state.requestedSupervisors.value, isValid: false }
+        value: { name: 'requestedSupervisors', value: state.requestedSupervisors.value, isValid: false }
       });
     }
-    if (!formData.dateFrom.value) {
+    if (!formData.dateFrom) {
       dispatchModification({ type: 'DATE_FROM', value: '', isValid: false });
       isFormValid = false;
     }
-    if (!formData.dateTo.value) {
+    if (!formData.dateTo) {
       dispatchModification({ type: 'DATE_TO', value: '', isValid: false });
       isFormValid = false;
     }
@@ -75,13 +71,11 @@ const RequestHoliday = ({ supervisors }) => {
 
   const handleSendClick = () => {
     if (!validateForm(state)) { return; }
-    console.log({
-      dateFrom: state.dateFrom.value,
-      dateTo: state.dateTo.value,
-      holidayType: state.holidayType,
-      notes: state.notes,
-      requestedSupervisors: state.requestedSupervisors.value
-    });
+
+    const {
+      dateFrom, dateTo, holidayType, notes, requestedSupervisors
+    } = state;
+    console.log(dateFrom, dateTo, holidayType, notes, requestedSupervisors);
   };
   return (
     <Container maxWidth="sm">
@@ -102,7 +96,7 @@ const RequestHoliday = ({ supervisors }) => {
               variant="inline"
               label="Start Date"
               format="MM/DD/YYYY"
-              value={state.dateFrom.value}
+              value={state.dateFrom}
               onChange={handleDateChange('DATE_FROM')}
               invalidDateMessage="You must select a correct date"
             />
@@ -118,11 +112,11 @@ const RequestHoliday = ({ supervisors }) => {
               autoOk
               required
               shouldDisableDate={shouldDisableDate}
-              minDate={state.dateFrom.value}
+              minDate={state.dateFrom.valueOf()}
               variant="inline"
               label="End Date"
               format="MM/DD/YYYY"
-              value={state.dateTo.value}
+              value={state.dateTo}
               onChange={handleDateChange('DATE_TO')}
               invalidDateMessage="You must select a correct date"
             />
@@ -213,7 +207,7 @@ const RequestHoliday = ({ supervisors }) => {
   );
 };
 RequestHoliday.propTypes = {
-  supervisors: PropTypes.arrayOf(PropTypes.number)
+  supervisors: PropTypes.arrayOf(PropTypes.string)
 };
 RequestHoliday.defaultProps = {
   supervisors: []
