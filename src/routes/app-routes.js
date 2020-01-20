@@ -7,6 +7,7 @@ import {
 
 import Dashboard from '../components/pages/dashboard/dashboard.container';
 import RequestHoliday from '../components/pages/request-holiday/request-holiday.container';
+import Profile from '../components/pages/profile/profile.container';
 
 const AppRoutes = () => (
   <Switch>
@@ -19,6 +20,11 @@ const AppRoutes = () => (
       exact
       path="/request-holiday"
       component={RequestHoliday}
+    />
+    <Route
+      exact
+      path="/profile"
+      component={Profile}
     />
     <Redirect to="/" />
   </Switch>
