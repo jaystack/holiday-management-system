@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useReducer } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import { KeyboardDatePicker } from '@material-ui/pickers';
@@ -18,32 +19,64 @@ import Section from '../../commons/section/section.component';
 
 import useStyles from './request-holiday.styles';
 
-const names = [
-  'Tom',
-  'Anna',
-  'Daniel',
-  'Cailey',
-];
-const RequestHoliday = () => {
+const initialState = {
+  holidayType: { value: 1, isValid: true },
+  notes: { value: '', isValid: true },
+  dateFrom: { value: moment(), isValid: true },
+  dateTo: { value: moment(), isValid: true },
+  requestedSupervisors: { value: [], isValid: true }
+};
+const reducer = (state, {
+  type, value
+}) => {
+  switch (type) {
+    case 'DATE_FROM':
+      return { ...state, dateFrom: value };
+    case 'DATE_TO':
+      return { ...state, dateTo: value };
+    case 'VALIDATE':
+      return value;
+    default:
+      return { ...state, [value.name]: value };
+  }
+};
+const RequestHoliday = ({ supervisors }) => {
   const classes = useStyles();
-  const [holidayType, setHolidayType] = React.useState(1);
-  const [sendRequestTo, setSendRequestTo] = React.useState({ value: [], isValid: true });
-  const [selectedDateFrom, handleDateChangeFrom] = React.useState(moment().valueOf());
-  const [selectedDateTo, handleDateChangeTo] = React.useState(moment().valueOf());
-  const [note, handleNotesChange] = React.useState('');
+
+  const [state, dispatchModification] = useReducer(reducer, initialState);
   useEffect(() => {
-    if (selectedDateFrom > selectedDateTo) handleDateChangeTo(selectedDateFrom);
-  }, [selectedDateFrom]);
+    if (state.dateFrom.value > state.dateTo.value) dispatchModification({ ...state.dateFrom, type: 'DATE_TO' });
+  }, [state.dateFrom]);
+
   const shouldDisableDate = day => (day.isoWeekday() === 6 || day.isoWeekday() === 7);
+  const handleChange = ({ target }) => dispatchModification({ value: { value: target.value, name: target.name, isValid: true } });
+  const handleDateChange = name => date => dispatchModification({ type: name, value: { ...date, isValid: true } });
+  const markInvalidFormData = formData => Object.keys(formData).reduce((accumulator, key) => ({
+    ...accumulator,
+    [key]: {
+      ...formData[key],
+      // eslint-disable-next-line no-nested-ternary
+      isValid: key === 'notes'
+        ? true
+        : formData[key].value === undefined
+          ? false
+          : formData[key].value.length !== 0
+    }
+  }), {});
+  const isValid = data => Object.values(data).every(element => element.isValid === true);
+
+
   const handleSendClick = () => {
-    if (sendRequestTo.value.length === 0) return setSendRequestTo({ value: sendRequestTo.value, isValid: false });
-    // console.log({
-    //   selectedDateFrom,
-    //   selectedDateTo,
-    //   holidayType,
-    //   note,
-    //   sendRequestTo: sendRequestTo.value
-    // });
+    const markedFormData = markInvalidFormData(state);
+    if (!isValid(markedFormData)) {
+      dispatchModification({ type: 'VALIDATE', value: markedFormData });
+      return;
+    }
+
+    const {
+      dateFrom, dateTo, holidayType, notes, requestedSupervisors
+    } = state;
+    console.log(dateFrom, dateTo, holidayType, notes, requestedSupervisors);
   };
   return (
     <Container maxWidth="sm">
@@ -55,6 +88,7 @@ const RequestHoliday = () => {
             md={6}
           >
             <KeyboardDatePicker
+              id="DATE_FROM"
               className={classes.fullWidth}
               required
               autoOk
@@ -63,8 +97,9 @@ const RequestHoliday = () => {
               variant="inline"
               label="Start Date"
               format="MM/DD/YYYY"
-              value={selectedDateFrom}
-              onChange={date => handleDateChangeFrom(date)}
+              value={state.dateFrom}
+              onChange={handleDateChange('DATE_FROM')}
+              invalidDateMessage="You must select a correct date"
             />
           </Grid>
           <Grid
@@ -73,16 +108,18 @@ const RequestHoliday = () => {
             md={6}
           >
             <KeyboardDatePicker
+              name="DATE_TO"
               className={classes.fullWidth}
               autoOk
               required
               shouldDisableDate={shouldDisableDate}
-              minDate={selectedDateFrom}
+              minDate={state.dateFrom.valueOf()}
               variant="inline"
               label="End Date"
               format="MM/DD/YYYY"
-              value={selectedDateTo}
-              onChange={date => handleDateChangeTo(date)}
+              value={state.dateTo}
+              onChange={handleDateChange('DATE_TO')}
+              invalidDateMessage="You must select a correct date"
             />
           </Grid>
           <Grid
@@ -90,13 +127,14 @@ const RequestHoliday = () => {
             xs={12}
             className={classes.padding12}
           >
-            <FormControl fullWidth error={!sendRequestTo.isValid}>
+            <FormControl fullWidth error={!state.requestedSupervisors.isValid}>
               <InputLabel>Send request to</InputLabel>
               <Select
+                name="requestedSupervisors"
                 multiple
                 required
-                value={sendRequestTo.value}
-                onChange={event => setSendRequestTo({ value: event.target.value, isValid: true })}
+                value={state.requestedSupervisors.value}
+                onChange={handleChange}
                 input={<Input id="select-multiple-chip" />}
                 renderValue={selected => (
                   <div>
@@ -106,13 +144,13 @@ const RequestHoliday = () => {
                   </div>
                 )}
               >
-                {names.map(name => (
-                  <MenuItem key={name} value={name}>
-                    {name}
+                {supervisors.map(supervisor => (
+                  <MenuItem key={supervisor} value={supervisor}>
+                    {supervisor}
                   </MenuItem>
                 ))}
               </Select>
-              {!sendRequestTo.isValid && <FormHelperText>You must select at least one person</FormHelperText>}
+              {!state.requestedSupervisors.isValid && <FormHelperText>You must select at least one person</FormHelperText>}
             </FormControl>
           </Grid>
           <Grid
@@ -123,9 +161,10 @@ const RequestHoliday = () => {
             <FormControl className={classes.fullWidth}>
               <InputLabel>Holiday Type</InputLabel>
               <Select
-                value={holidayType}
+                name="holidayType"
+                value={state.holidayType.value}
                 required
-                onChange={event => setHolidayType(event.target.value)}
+                onChange={handleChange}
               >
                 <MenuItem value={1}>Normal holiday</MenuItem>
                 <MenuItem value={2}>With payment</MenuItem>
@@ -139,13 +178,14 @@ const RequestHoliday = () => {
             className={classes.padding12}
           >
             <TextField
-              id="outlined-textarea"
+              name="notes"
+              type="text"
               label="Notes"
               multiline
-              value={note}
+              value={state.notes.value}
               className={classes.fullWidth}
               rowsMax={10}
-              onChange={event => handleNotesChange(event.target.value)}
+              onChange={handleChange}
             />
           </Grid>
           <Grid
@@ -167,5 +207,10 @@ const RequestHoliday = () => {
     </Container>
   );
 };
-
+RequestHoliday.propTypes = {
+  supervisors: PropTypes.arrayOf(PropTypes.string)
+};
+RequestHoliday.defaultProps = {
+  supervisors: []
+};
 export default RequestHoliday;
