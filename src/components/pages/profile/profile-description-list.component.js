@@ -4,26 +4,22 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import PropTypes from 'prop-types';
 
-const ProfileDescriptionList = ({ userData }) => {
-  const userDataKeys = Object.keys(userData);
-  const descList = userDataKeys.map((key,index) => (
-    <ListItemText
-      primary={key}
-      secondary={userData[key]}
-      key={key}
-    />
-  ));
-  return (
-    <List>
-      <ListItem>
-        {descList}
+const ProfileDescriptionList = ({ userData }) => (
+  <List>
+    {Object.keys(userData).map(key => (
+      <ListItem key={key}>
+        <ListItemText
+          primary={key}
+          secondary={userData[key]}
+        />
       </ListItem>
-    </List>
-  );
-};
+    ))}
+  </List>
+);
 
 ProfileDescriptionList.propTypes = {
   userData: PropTypes.shape({
+    email: PropTypes.string,
     fullName: PropTypes.string,
     jobTitle: PropTypes.string,
     jobLevel: PropTypes.string,
