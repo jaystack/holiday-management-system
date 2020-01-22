@@ -43,7 +43,7 @@ export const reducer = handleActions(
   {
     [updateUserData]: (state, { payload: userData }) => ({
       ...state,
-      userData
+      userData,
     })
   },
   initialState
