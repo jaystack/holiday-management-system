@@ -3,10 +3,12 @@ import { getUserData, updateUserData } from '../../../store/profile';
 
 import Profile from './profile.component';
 
-const mapStateToProps = state => ({ userData: getUserData(state) });
+const mapStateToProps = state => ({
+  userData: getUserData(state),
+});
 
 const mapDispatchToProps = {
-  updateUserData
+  updateUserData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
