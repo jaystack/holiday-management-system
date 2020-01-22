@@ -29,15 +29,8 @@ Profile.propTypes = {
     jobTitle: PropTypes.string,
     jobLevel: PropTypes.string,
     skills: PropTypes.arrayOf(PropTypes.string)
-  })
+  }).isRequired
 };
-Profile.defaultProps = {
-  userData: {
-    fullName: 'Daniel Sábic',
-    jobTitle: 'Software Developer',
-    jobLevel: 'Junior',
-    skills: ['nodejs,devops'],
-  }
-};
+
 
 export default Profile;
