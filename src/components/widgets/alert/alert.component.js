@@ -7,8 +7,11 @@ import PropTypes from 'prop-types';
 const AlertTile = ({ alert, removeAlert }) => (
   alert && alert.title ? (
     <Snackbar
-      open key={alert.id}
+      open
+      key={alert.id}
+      autoHideDuration={6000}
       anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
+      onClose={() => removeAlert(alert.id)}
     >
       <Alert
         onClose={() => removeAlert(alert.id)}
