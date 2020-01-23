@@ -1,10 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 import { put, takeLatest } from 'redux-saga/effects';
 import { setAppWaiting, addAlert } from '../app';
-/**
- * HELPERS
- */
-const delay = ms => new Promise(res => setTimeout(res, ms));
 
 /**
  * INITIAL STATE
@@ -15,7 +11,7 @@ export const initialState = {
     fullName: '',
     jobTitle: '',
     jobLevel: '',
-    skills: [''],
+    skills: [],
   }
 };
 
@@ -55,7 +51,6 @@ export const reducer = handleActions(
       ...state,
       userData,
     }),
-    [fetchUserData]: state => ({ ...state })
   },
   initialState
 );
@@ -86,3 +81,8 @@ function* fetchUserDataSaga() {
 export function* watchFetchUserData() {
   yield takeLatest(FETCH_USER_DATA, fetchUserDataSaga);
 }
+
+/**
+ * HELPERS
+ */
+const delay = ms => new Promise(res => setTimeout(res, ms));

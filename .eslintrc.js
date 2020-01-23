@@ -29,6 +29,7 @@ module.exports = {
     'consistent-return': 0,
     'max-len': [2, { code: 175 }],
     'no-console': 'off',
+    'no-use-before-define': [1, { "function": false }],
     'react/no-array-index-key': 0,
     'react/prop-types': [2, { ignore: ['classes', 'children','array'] }],
     'react/jsx-max-props-per-line': [2, { maximum: 2 }],

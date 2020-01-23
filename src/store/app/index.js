@@ -1,6 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
-import { takeLatest } from 'redux-saga/effects';
 
 /**
  * INITIAL STATE
@@ -99,7 +98,3 @@ export const reducer = handleActions(
 /**
  * WATCHERS
  */
-
-export function* watchAddAlert() {
-  yield takeLatest(ADD_ALERT, addAlert);
-}

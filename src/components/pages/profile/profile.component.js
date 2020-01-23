@@ -9,7 +9,7 @@ import ProfileDescriptionList from './profile-description-list.component';
 const Profile = ({ userData, fetchUserData }) => {
   useEffect(() => {
     fetchUserData();
-  }, []);
+  }, [fetchUserData]);
   return (
     <Container>
       <Section

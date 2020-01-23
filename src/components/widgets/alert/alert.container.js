@@ -4,8 +4,12 @@ import AlertTile from './alert.component';
 
 import { getLastAlert, removeAlert } from '../../../store/app';
 
-const mapStateToProps = state => ({ alert: getLastAlert(state) });
+const mapStateToProps = state => ({
+  alert: getLastAlert(state),
+});
 
-const mapDispatchToProps = { removeAlert };
+const mapDispatchToProps = {
+  removeAlert,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AlertTile);
