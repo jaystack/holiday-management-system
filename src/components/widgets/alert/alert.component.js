@@ -13,7 +13,7 @@ const AlertTile = ({ alert, removeAlert }) => {
       open key={alert.id}
       anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
     >
-      <Alert onClose={() => (removeAlert(alert.id))} severity="error">
+      <Alert onClose={() => (removeAlert(alert.id))} severity={alert.severity || 'info'}>
         <AlertTitle>{alert.title}</AlertTitle>
         {alert.desc}
       </Alert>
@@ -26,6 +26,7 @@ AlertTile.propTypes = {
     title: PropTypes.string,
     desc: PropTypes.string,
     id: PropTypes.number,
+    severity: PropTypes.string,
   }).isRequired,
   removeAlert: PropTypes.func.isRequired,
 };

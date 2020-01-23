@@ -67,7 +67,8 @@ export const reducer = handleActions(
 function* fetchUserDataSaga() {
   yield put(setAppWaiting(true));
   yield delay(2000);
-  yield put(addAlert({ title: 'API error', desc: 'api error desc' }));
+  yield put(addAlert({ title: 'API SUCCESS', desc: 'api success desc', severity: 'success' }));
+  yield put(addAlert({ title: 'API error', desc: 'api error desc', severity: 'error' }));
   yield put(updateUserData({
     fullName: 'Daniel Sábic',
     jobTitle: 'Software Developer',
