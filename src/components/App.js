@@ -5,7 +5,7 @@ import AppBar from './navigations/app-bar/app-bar.container';
 import SideBar from './navigations/side-bar/side-bar.container';
 
 import AppRoutes from '../routes/app-routes';
-
+import AlertTile from './widgets/alert/alert.container';
 import useStyles from './styles';
 
 const App = () => {
@@ -16,6 +16,7 @@ const App = () => {
       <SideBar />
       <AppBar />
       <ContentWrapper>
+        <AlertTile />
         <AppRoutes />
       </ContentWrapper>
     </div>

@@ -10,7 +10,7 @@ const ProfileDescriptionList = ({ userData }) => (
       <ListItem key={key}>
         <ListItemText
           primary={key}
-          secondary={userData[key]}
+          secondary={userData[key].toString()}
         />
       </ListItem>
     ))}

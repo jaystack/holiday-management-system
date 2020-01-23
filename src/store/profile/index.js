@@ -1,5 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
-// import { put, takeEvery } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
+import { setAppWaiting, addAlert } from '../app';
 
 /**
  * INITIAL STATE
@@ -7,10 +8,10 @@ import { createAction, handleActions } from 'redux-actions';
 
 export const initialState = {
   userData: {
-    fullName: 'Daniel Sábic',
-    jobTitle: 'Software Developer',
-    jobLevel: 'Junior',
-    skills: ['nodejs', 'devops'],
+    fullName: '',
+    jobTitle: '',
+    jobLevel: '',
+    skills: [],
   }
 };
 
@@ -20,6 +21,7 @@ export const initialState = {
 
 
 export const UPDATE_USER_DATA = 'UPDATE_USER_DATA';
+export const FETCH_USER_DATA = 'FETCH_USER_DATA';
 
 /**
  * ACTION CREATORS
@@ -27,6 +29,10 @@ export const UPDATE_USER_DATA = 'UPDATE_USER_DATA';
 
 export const updateUserData = createAction(
   UPDATE_USER_DATA
+);
+
+export const fetchUserData = createAction(
+  FETCH_USER_DATA
 );
 
 /**
@@ -44,7 +50,7 @@ export const reducer = handleActions(
     [updateUserData]: (state, { payload: userData }) => ({
       ...state,
       userData,
-    })
+    }),
   },
   initialState
 );
@@ -53,6 +59,30 @@ export const reducer = handleActions(
  * SAGAS
  */
 
-export function profileSaga() {
-  console.log('Profile Saga');
+function* fetchUserDataSaga() {
+  yield put(setAppWaiting(true));
+  yield delay(2000);
+  yield put(addAlert({ title: 'API SUCCESS', desc: 'api success desc', severity: 'success' }));
+  yield put(addAlert({ title: 'API error', desc: 'api error desc', severity: 'error' }));
+  yield put(updateUserData({
+    fullName: 'Daniel Sábic',
+    jobTitle: 'Software Developer',
+    jobLevel: 'Junior',
+    skills: ['nodejs', 'devops'],
+  }));
+  yield put(setAppWaiting(false));
 }
+
+
+/**
+ * WATCHERS
+ */
+
+export function* watchFetchUserData() {
+  yield takeLatest(FETCH_USER_DATA, fetchUserDataSaga);
+}
+
+/**
+ * HELPERS
+ */
+const delay = ms => new Promise(res => setTimeout(res, ms));
