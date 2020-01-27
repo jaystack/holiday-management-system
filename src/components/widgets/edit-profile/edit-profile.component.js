@@ -19,7 +19,13 @@ const reducer = (state, {
     case 'PROFILE_CHANGED':
       return { ...state, ...value };
     case 'ADD_SKILL':
-      return { ...state, skills: value ? [...state.skills, value] : state.skills };
+      return {
+        ...state,
+        skills:
+        value
+          ? [...state.skills, value]
+          : state.skills
+      };
     case 'REMOVE_SKILL':
       return { ...state, skills: state.skills.filter(element => element !== value) };
     case 'VALIDATE':
@@ -40,7 +46,6 @@ const EditProfile = ({ userData, modifyUserData }) => {
   const handleClickOpen = () => dispatch({ value: true, key: 'setOpen' });
 
   const handleClose = () => dispatch({ value: false, key: 'setOpen' });
-
 
   const handleSubmit = () => {
     const { setOpen, ...modifiedUserData } = state;
@@ -64,7 +69,9 @@ const EditProfile = ({ userData, modifyUserData }) => {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Edit User Details</DialogTitle>
+        <DialogTitle id="form-dialog-title">
+        Edit User Details
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
             Change your information
