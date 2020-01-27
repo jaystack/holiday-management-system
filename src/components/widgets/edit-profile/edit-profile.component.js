@@ -29,26 +29,22 @@ const reducer = (state, {
   }
 };
 
-const EditProfile = ({ userData, handleUserDataChange }) => {
-  const initialState = {
-    setOpen: false,
-  };
+const initialState = {
+  setOpen: false,
+};
+const EditProfile = ({ userData, modifyUserData }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   useEffect(() => {
     dispatch({ value: userData, type: 'PROFILE_CHANGED' });
   }, [userData]);
-  const handleClickOpen = () => {
-    dispatch({ value: true, key: 'setOpen' });
-  };
+  const handleClickOpen = () => dispatch({ value: true, key: 'setOpen' });
 
-  const handleClose = () => {
-    dispatch({ value: false, key: 'setOpen' });
-  };
+  const handleClose = () => dispatch({ value: false, key: 'setOpen' });
+
 
   const handleSubmit = () => {
-    const modifiedUserData = { ...state };
-    delete modifiedUserData.setOpen;
-    handleUserDataChange(modifiedUserData);
+    const { setOpen, ...modifiedUserData } = state;
+    modifyUserData(modifiedUserData);
     dispatch({ value: false, key: 'setOpen' });
   };
   const handleChange = ({ target }) => dispatch({ value: target.value, key: target.name || target.id });
@@ -57,13 +53,15 @@ const EditProfile = ({ userData, handleUserDataChange }) => {
   return (
     <div>
       <Button
-        variant="contained" color="primary"
+        variant="contained"
+        color="primary"
         onClick={handleClickOpen}
       >
         <EditIcon />
       </Button>
       <Dialog
-        open={state.setOpen} onClose={handleClose}
+        open={state.setOpen}
+        onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">Edit User Details</DialogTitle>
@@ -104,10 +102,8 @@ const EditProfile = ({ userData, handleUserDataChange }) => {
                   name={skill}
                   {...getTagProps({ index })}
                   onDelete={() => dispatch({ value: skill, type: 'REMOVE_SKILL' })}
-
                 />
-              ))
-        }
+              ))}
               renderInput={params => (
                 <TextField
                   {...params}
@@ -141,7 +137,7 @@ EditProfile.propTypes = {
     jobLevel: PropTypes.string,
     skills: PropTypes.arrayOf(PropTypes.string)
   }).isRequired,
-  handleUserDataChange: PropTypes.func.isRequired,
+  modifyUserData: PropTypes.func.isRequired,
 };
 
 export default EditProfile;

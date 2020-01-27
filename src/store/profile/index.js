@@ -21,7 +21,6 @@ export const initialState = {
 
 export const UPDATE_USER_DATA = 'UPDATE_USER_DATA';
 export const MODIFY_USER_DATA = 'MODIFY_USER_DATA';
-
 export const FETCH_USER_DATA = 'FETCH_USER_DATA';
 
 /**
