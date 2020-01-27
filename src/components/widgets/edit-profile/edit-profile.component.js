@@ -19,7 +19,7 @@ const reducer = (state, {
     case 'PROFILE_CHANGED':
       return { ...state, ...value };
     case 'ADD_SKILL':
-      return { ...state, skills: value ? [...state.skills, value] : [...state.skills] };
+      return { ...state, skills: value ? [...state.skills, value] : state.skills };
     case 'REMOVE_SKILL':
       return { ...state, skills: state.skills.filter(element => element !== value) };
     case 'VALIDATE':
@@ -29,7 +29,7 @@ const reducer = (state, {
   }
 };
 
-export default function EditProfile({ userData, handleUserDataChange }) {
+const EditProfile = ({ userData, handleUserDataChange }) => {
   const initialState = {
     setOpen: false,
   };
@@ -131,7 +131,7 @@ export default function EditProfile({ userData, handleUserDataChange }) {
       </Dialog>
     </div>
   );
-}
+};
 
 EditProfile.propTypes = {
   userData: PropTypes.shape({
@@ -143,3 +143,5 @@ EditProfile.propTypes = {
   }).isRequired,
   handleUserDataChange: PropTypes.func.isRequired,
 };
+
+export default EditProfile;

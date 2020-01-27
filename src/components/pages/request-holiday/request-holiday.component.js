@@ -42,11 +42,18 @@ const reducer = (state, {
 };
 const RequestHoliday = ({ supervisors }) => {
   const classes = useStyles();
-
   const [state, dispatchModification] = useReducer(reducer, initialState);
+  const {
+    dateFrom,
+    dateTo,
+    holidayType,
+    notes,
+    requestedSupervisors
+  } = state;
+
   useEffect(() => {
-    if (state.dateFrom.value > state.dateTo.value) dispatchModification({ ...state.dateFrom, type: 'DATE_TO' });
-  }, [state.dateFrom, state.dateTo]);
+    if (dateFrom.value > dateTo.value) dispatchModification({ ...dateFrom, type: 'DATE_TO' });
+  }, [dateFrom, dateTo]);
 
   const shouldDisableDate = day => (day.isoWeekday() === 6 || day.isoWeekday() === 7);
   const handleChange = ({ target }) => dispatchModification({ value: { value: target.value, name: target.name, isValid: true } });
@@ -72,11 +79,13 @@ const RequestHoliday = ({ supervisors }) => {
       dispatchModification({ type: 'VALIDATE', value: markedFormData });
       return;
     }
-
-    const {
-      dateFrom, dateTo, holidayType, notes, requestedSupervisors
-    } = state;
-    console.log(dateFrom, dateTo, holidayType, notes, requestedSupervisors);
+    console.log({
+      dateFrom,
+      dateTo,
+      holidayType,
+      notes,
+      requestedSupervisors,
+    });
   };
   return (
     <Container maxWidth="sm">
@@ -211,6 +220,6 @@ RequestHoliday.propTypes = {
   supervisors: PropTypes.arrayOf(PropTypes.string)
 };
 RequestHoliday.defaultProps = {
-  supervisors: []
+  supervisors: ['Daniel']
 };
 export default RequestHoliday;

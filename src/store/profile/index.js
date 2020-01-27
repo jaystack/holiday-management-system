@@ -19,9 +19,8 @@ export const initialState = {
  * ACTION TYPES
  */
 
-
 export const UPDATE_USER_DATA = 'UPDATE_USER_DATA';
-export const HANDLE_USER_DATA_CHANGE = 'HANDLE_USER_DATA_CHANGE';
+export const MODIFY_USER_DATA = 'MODIFY_USER_DATA';
 
 export const FETCH_USER_DATA = 'FETCH_USER_DATA';
 
@@ -33,8 +32,8 @@ export const updateUserData = createAction(
   UPDATE_USER_DATA
 );
 
-export const handleUserDataChange = createAction(
-  HANDLE_USER_DATA_CHANGE
+export const modifyUserData = createAction(
+  MODIFY_USER_DATA
 );
 
 export const fetchUserData = createAction(
@@ -78,17 +77,21 @@ function* fetchUserDataSaga() {
     }));
   } catch (err) {
     yield put(addAlert({ title: 'API ERROR', desc: 'api success desc', severity: 'error' }));
-  } finally { yield put(setAppWaiting(false)); }
+  } finally {
+    yield put(setAppWaiting(false));
+  }
 }
 
-function* handleUserDataChangeSaga({ payload: userData }) {
+function* modifyUserDataSaga({ payload: userData }) {
   try {
     yield put(setAppWaiting(true));
     yield put(updateUserData(userData));
     yield put(addAlert({ title: 'profile updated', desc: 'profile updated', severity: 'info' }));
   } catch (err) {
     yield put(addAlert({ title: 'API ERROR', desc: 'api success desc', severity: 'error' }));
-  } finally { yield put(setAppWaiting(false)); }
+  } finally {
+    yield put(setAppWaiting(false));
+  }
 }
 /**
  * WATCHERS
@@ -97,10 +100,9 @@ function* handleUserDataChangeSaga({ payload: userData }) {
 export function* watchFetchUserData() {
   yield takeLatest(FETCH_USER_DATA, fetchUserDataSaga);
 }
-export function* watchHandleUserDataChange() {
-  yield takeLatest(handleUserDataChange, handleUserDataChangeSaga);
+export function* watchModifyUserData() {
+  yield takeLatest(MODIFY_USER_DATA, modifyUserDataSaga);
 }
-
 
 /**
  * HELPERS

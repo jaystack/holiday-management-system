@@ -2,12 +2,12 @@ import { connect } from 'react-redux';
 
 import EditProfile from './edit-profile.component';
 
-import { handleUserDataChange } from '../../../store/profile';
+import { modifyUserData } from '../../../store/profile';
 
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {
-  handleUserDataChange,
+  modifyUserData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditProfile);

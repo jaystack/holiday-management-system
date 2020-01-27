@@ -24,7 +24,7 @@ const Profile = ({ userData, fetchUserData }) => {
             <h3>Details:</h3>
             <ProfileDescriptionList userData={userData} />
           </Grid>
-          <Grid item xs={1}>
+          <Grid item xs={3}>
             <EditProfile userData={userData} />
           </Grid>
         </Grid>
