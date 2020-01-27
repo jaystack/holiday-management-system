@@ -51,8 +51,9 @@ export default function EditProfile({ userData, handleUserDataChange }) {
     handleUserDataChange(modifiedUserData);
     dispatch({ value: false, key: 'setOpen' });
   };
+  const handleChange = ({ target }) => dispatch({ value: target.value, key: target.name || target.id });
 
-  const handleChange = ({ target }) => dispatch({ value: target.value, type: 'ADD_SKILL' });
+  const handleChangeSkills = ({ target }) => dispatch({ value: target.value, type: 'ADD_SKILL' });
   return (
     <div>
       <Button
@@ -91,7 +92,7 @@ export default function EditProfile({ userData, handleUserDataChange }) {
               multiple
               id="skills"
               name="skills"
-              onChange={handleChange}
+              onChange={handleChangeSkills}
               options={[]}
               value={state?.skills || userData.skills}
               freeSolo
