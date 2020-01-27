@@ -46,7 +46,7 @@ const RequestHoliday = ({ supervisors }) => {
   const [state, dispatchModification] = useReducer(reducer, initialState);
   useEffect(() => {
     if (state.dateFrom.value > state.dateTo.value) dispatchModification({ ...state.dateFrom, type: 'DATE_TO' });
-  }, [state.dateFrom]);
+  }, [state.dateFrom, state.dateTo]);
 
   const shouldDisableDate = day => (day.isoWeekday() === 6 || day.isoWeekday() === 7);
   const handleChange = ({ target }) => dispatchModification({ value: { value: target.value, name: target.name, isValid: true } });
@@ -88,7 +88,7 @@ const RequestHoliday = ({ supervisors }) => {
             md={6}
           >
             <KeyboardDatePicker
-              id="DATE_FROM"
+              name="DATE_FROM"
               className={classes.fullWidth}
               required
               autoOk

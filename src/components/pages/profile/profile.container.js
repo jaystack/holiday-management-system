@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { getUserData, updateUserData, fetchUserData } from '../../../store/profile';
+import { getUserData, fetchUserData } from '../../../store/profile';
 
 import Profile from './profile.component';
 
@@ -8,7 +8,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  updateUserData,
   fetchUserData,
 };
 

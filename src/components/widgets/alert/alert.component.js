@@ -4,6 +4,7 @@ import AlertTitle from '@material-ui/lab/AlertTitle';
 import Snackbar from '@material-ui/core/Snackbar';
 import PropTypes from 'prop-types';
 
+
 const AlertTile = ({ alert, removeAlert }) => (
   alert && alert.title ? (
     <Snackbar
