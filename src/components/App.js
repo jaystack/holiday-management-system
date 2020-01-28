@@ -7,6 +7,7 @@ import SideBar from './navigations/side-bar/side-bar.container';
 import AppRoutes from '../routes/app-routes';
 import AlertTile from './widgets/alert/alert.container';
 import useStyles from './styles';
+import AppProgress from './widgets/app-progress/app-progress.container';
 
 const App = () => {
   const classes = useStyles();
@@ -16,6 +17,7 @@ const App = () => {
       <SideBar />
       <AppBar />
       <ContentWrapper>
+        <AppProgress />
         <AlertTile />
         <AppRoutes />
       </ContentWrapper>
