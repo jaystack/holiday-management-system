@@ -11,6 +11,8 @@ const AppProfile = ({ isAppWaiting }) => (
   <Dialog
     aria-labelledby="simple-dialog-title"
     open={isAppWaiting}
+    disableBackdropClick
+    disableEscapeKeyDown
   >
     <DialogActions>
       <DialogTitle>Loading</DialogTitle>

@@ -1,5 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest, call } from 'redux-saga/effects';
 import { setAppWaiting, addAlert } from '../app';
 
 /**
@@ -66,7 +66,7 @@ export const reducer = handleActions(
 function* fetchUserDataSaga() {
   yield put(setAppWaiting(true));
   try {
-    yield delay(2000);
+    yield call(delay, 2000);
     yield put(addAlert({ title: 'API SUCCESS', desc: 'api success desc', severity: 'success' }));
     yield put(updateUserData({
       fullName: 'Daniel Sábic',
@@ -85,7 +85,7 @@ function* modifyUserDataSaga({ payload: userData }) {
   try {
     yield put(setAppWaiting(true));
     yield put(updateUserData(userData));
-    yield delay(2000);
+    yield call(delay, 2000);
     yield put(addAlert({ title: 'profile updated', desc: 'profile updated', severity: 'info' }));
   } catch (err) {
     yield put(addAlert({ title: 'API ERROR', desc: 'api success desc', severity: 'error' }));

@@ -52,7 +52,7 @@ export const removeAlert = createAction(
  */
 
 export const getIsMobileDrawerOpened = state => state.app.isMobileDrawerOpened;
-export const getAppWaitingCounter = state => state?.app?.appWaiting || 0;
+export const getAppWaitingCounter = state => state.app.appWaiting;
 export const getIsAppWaiting = createSelector(
   getAppWaitingCounter,
   counter => counter > 0
