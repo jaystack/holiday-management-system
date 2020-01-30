@@ -63,7 +63,7 @@ export const reducer = handleActions(
  * SAGAS
  */
 
-function* fetchUserDataSaga() {
+export function* fetchUserDataSaga() {
   yield put(setAppWaiting(true));
   try {
     yield call(delay, 2000);
@@ -81,7 +81,7 @@ function* fetchUserDataSaga() {
   }
 }
 
-function* modifyUserDataSaga({ payload: userData }) {
+export function* modifyUserDataSaga({ payload: userData }) {
   try {
     yield put(setAppWaiting(true));
     yield put(updateUserData(userData));
@@ -107,4 +107,4 @@ export function* watchModifyUserData() {
 /**
  * HELPERS
  */
-const delay = ms => new Promise(res => setTimeout(res, ms));
+export const delay = ms => new Promise(res => setTimeout(res, ms));
