@@ -1,6 +1,6 @@
 import { put, call } from 'redux-saga/effects';
-import * as profile from '../store/profile';
-import * as app from '../store/app';
+import * as profile from '../../store/profile';
+import * as app from '../../store/app';
 /**
  * MOCK DATA
  */

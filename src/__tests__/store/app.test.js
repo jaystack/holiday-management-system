@@ -1,28 +1,8 @@
-import * as app from '../store/app';
+import * as app from '../../store/app';
 
 /**
  * MOCK DATA
  */
-const appWaitingState = {
-  app: {
-    appWaiting: 1,
-  }
-};
-
-const mobileDrawerOpenedState = {
-  app: {
-    isMobileDrawerOpened: true
-  }
-};
-
-const multipleAlertsState = {
-  app: {
-    alerts: [
-      { desc: 'firstAlert', severity: 'error', title: 'firstAlert' },
-      { desc: 'lastAlert', severity: 'error', title: 'lastAlert' }
-    ],
-  }
-};
 const alert = {
   desc: 'firstAlert',
   severity: 'error',
@@ -59,11 +39,25 @@ describe('actions', () => {
     };
     expect(app.toggleMobileDrawer()).toEqual(expectedAction);
   });
-  it('setAppWaiting', () => {
+  it('setAppWaiting no payload', () => {
     const expectedAction = {
       type: app.SET_APP_WAITING,
     };
     expect(app.setAppWaiting()).toEqual(expectedAction);
+  });
+  it('setAppWaiting true', () => {
+    const expectedAction = {
+      type: app.SET_APP_WAITING,
+      payload: true
+    };
+    expect(app.setAppWaiting(true)).toEqual(expectedAction);
+  });
+  it('setAppWaiting false', () => {
+    const expectedAction = {
+      type: app.SET_APP_WAITING,
+      payload: false
+    };
+    expect(app.setAppWaiting(false)).toEqual(expectedAction);
   });
   it('addAlert', () => {
     const expectedAction = {
@@ -84,20 +78,30 @@ describe('actions', () => {
  * SELECTORS
  */
 describe('selectors', () => {
+  const state = {
+    app: {
+      appWaiting: 1,
+      isMobileDrawerOpened: true,
+      alerts: [
+        { desc: 'firstAlert', severity: 'error', title: 'firstAlert' },
+        { desc: 'lastAlert', severity: 'error', title: 'lastAlert' }
+      ],
+    }
+  };
   it('getIsMobileDrawerOpened', () => {
-    expect(app.getIsMobileDrawerOpened(mobileDrawerOpenedState)).toEqual(true);
+    expect(app.getIsMobileDrawerOpened(state)).toEqual(true);
   });
   it('getAppWaitingCounter', () => {
-    expect(app.getAppWaitingCounter(appWaitingState)).toEqual(1);
+    expect(app.getAppWaitingCounter(state)).toEqual(1);
   });
   it('isThereAlert', () => {
-    expect(app.isThereAlert(multipleAlertsState)).toEqual(true);
+    expect(app.isThereAlert(state)).toEqual(true);
   });
   it('getAlerts', () => {
-    expect(app.getAlerts(multipleAlertsState)).toEqual(alerts);
+    expect(app.getAlerts(state)).toEqual(alerts);
   });
   it('getLastAlert', () => {
-    expect(app.getLastAlert(multipleAlertsState)).toEqual(lastAlert);
+    expect(app.getLastAlert(state)).toEqual(lastAlert);
   });
 });
 /**
