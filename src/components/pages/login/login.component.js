@@ -1,4 +1,4 @@
-import React, { } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -11,10 +11,20 @@ import Alert from '@material-ui/lab/Alert';
 import Section from '../../commons/section/section.component';
 import useStyles from './login.styles';
 
-const Login = ({ authenticateUser, setUserCredentials, authError }) => {
+const Login = ({
+  authenticateUser, setUserCredentials, authError, validateJwtToken, jwtToken
+}) => {
+  useEffect(() => {
+    if (jwtToken) validateJwtToken(jwtToken);
+  },
+  [validateJwtToken, jwtToken]);
   const classes = useStyles();
 
-  const handleOnChange = ({ target: { id, value } }) => setUserCredentials({ id, value });
+  const handleOnChange = event => {
+    event.persist();
+    const { id, value } = event.target;
+    setUserCredentials({ id, value });
+  };
 
   const errorAlert = authError?.message
     ? (
@@ -98,6 +108,8 @@ export default Login;
 Login.propTypes = {
   authenticateUser: PropTypes.func.isRequired,
   setUserCredentials: PropTypes.func.isRequired,
+  validateJwtToken: PropTypes.func.isRequired,
+  jwtToken: PropTypes.string.isRequired,
   authError: PropTypes.shape({
     message: PropTypes.string,
     title: PropTypes.string,

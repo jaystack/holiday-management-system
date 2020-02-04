@@ -2,6 +2,7 @@ import { createAction, handleActions } from 'redux-actions';
 import {
   put, takeLatest, call, select
 } from 'redux-saga/effects';
+import { createSelector } from 'reselect';
 import history from '../../side-effects/history';
 import { setAppWaiting } from '../app';
 import authenticate from '../../api/auth';
@@ -12,6 +13,7 @@ import getUserData from '../../api/users';
  */
 
 export const initialState = {
+  jwtToken: localStorage.getItem('jwtToken') || '',
   user: {
     email: '',
     password: '',
@@ -25,9 +27,14 @@ export const initialState = {
  */
 export const SET_USER_CREDENTIALS = 'SET_USER_CREDENTIALS';
 
+export const SET_JWT_TOKEN = 'SET_JWT_TOKEN';
+
+
 export const SET_AUTH_ERROR = 'SET_AUTH_ERROR';
 
 export const AUTHENTICATE_USER = 'AUTHENTICATE_USER';
+
+export const VALIDATE_JWT_TOKEN = 'VALIDATE_JWT_TOKEN';
 
 export const AUTHENTICATION_SUCCESSFUL = 'AUTHENTICATION_SUCCESSFUL';
 
@@ -43,6 +50,11 @@ export const setUserCredentials = createAction(
   payload => payload
 );
 
+export const setJwtToken = createAction(
+  SET_JWT_TOKEN,
+  jwtToken => jwtToken
+);
+
 export const setAuthError = createAction(
   SET_AUTH_ERROR,
   error => error
@@ -52,6 +64,10 @@ export const authenticateUser = createAction(
   AUTHENTICATE_USER
 );
 
+export const validateJwtToken = createAction(
+  VALIDATE_JWT_TOKEN,
+  jwtToken => jwtToken
+);
 export const authenticationSuccessful = createAction(
   AUTHENTICATION_SUCCESSFUL,
 );
@@ -67,6 +83,11 @@ export const authenticationUnsuccessful = createAction(
 export const getIsAuthSuccessful = state => state.login.isAuthSuccessful;
 export const getUserCredentials = state => state.login.user;
 export const getAuthError = state => state.login.authError;
+export const getJwtToken = state => state.login.jwtToken;
+export const getIsAuthenticated = createSelector(getIsAuthSuccessful,
+  getJwtToken,
+  (isAuthSuccessful,
+    jwtToken) => jwtToken && isAuthSuccessful === true);
 /**
  * REDUCER
  */
@@ -86,6 +107,12 @@ export const reducer = handleActions(
           ...state.user,
           [id]: value
         }
+      }
+    ),
+    [setJwtToken]: (state, { payload: jwtToken }) => (
+      {
+        ...state,
+        jwtToken
       }
     ),
     [authenticationSuccessful]: state => ({
@@ -110,17 +137,30 @@ export function* authenticateUserSaga() {
     yield put(setAppWaiting(true));
     const response = yield call(authenticate, email, password);
     const { token: jwtToken } = response.data;
-    console.log(jwtToken);
-    const userData = yield call(getUserData, jwtToken);
-    console.log(userData);
-    yield put(authenticationSuccessful());
-    yield put(setAuthError({}));
-    history.push('/');
+    yield call(validateJWTTokenSaga, { payload: jwtToken });
   } catch (err) {
-    console.log(err.message);
     const { message } = err;
     yield put(authenticationUnsuccessful());
     yield put(setAuthError({ message }));
+  } finally {
+    yield put(setAppWaiting(false));
+  }
+}
+
+export function* validateJWTTokenSaga({ payload: jwtToken }) {
+  try {
+    yield put(setAppWaiting(true));
+    yield call(getUserData, jwtToken);
+    yield put(setJwtToken(jwtToken));
+    yield put(authenticationSuccessful());
+    yield put(setAuthError({}));
+    localStorage.setItem('jwtToken', jwtToken);
+    history.push('');
+  } catch (err) {
+    const { message } = err;
+    yield put(authenticationUnsuccessful());
+    yield put(setAuthError({ message }));
+    localStorage.removeItem('jwtToken');
   } finally {
     yield put(setAppWaiting(false));
   }
@@ -131,4 +171,8 @@ export function* authenticateUserSaga() {
 
 export function* watchAuthenticateUser() {
   yield takeLatest(AUTHENTICATE_USER, authenticateUserSaga);
+}
+
+export function* watchValidateJWTToken() {
+  yield takeLatest(VALIDATE_JWT_TOKEN, validateJWTTokenSaga);
 }
