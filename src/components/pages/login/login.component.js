@@ -1,17 +1,28 @@
-import React from 'react';
-
+import React, { } from 'react';
+import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import Alert from '@material-ui/lab/Alert';
 
 import Section from '../../commons/section/section.component';
 import useStyles from './login.styles';
 
-const Login = () => {
+const Login = ({ authenticateUser, setUserCredentials, authError }) => {
   const classes = useStyles();
+
+  const handleOnChange = ({ target: { id, value } }) => setUserCredentials({ id, value });
+
+  const errorAlert = authError?.message
+    ? (
+      <Alert severity="error">
+        Login Failed:
+        {` ${authError.message}`}
+      </Alert>
+    ) : '';
 
   return (
     <Container maxWidth={false}>
@@ -37,21 +48,24 @@ const Login = () => {
                 <Typography align="center">
                   Holiday Manager
                 </Typography>
+                {errorAlert}
               </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth>
                   <TextField
-                    id="email-input"
+                    id="email"
                     label="Email"
                     type="email"
                     name="email"
+                    onChange={handleOnChange}
                     autoComplete="email"
                     margin="normal"
                   />
                   <TextField
-                    id="password-input"
+                    id="password"
                     label="Password"
                     type="password"
+                    onChange={handleOnChange}
                     autoComplete="current-password"
                     margin="normal"
                   />
@@ -63,6 +77,7 @@ const Login = () => {
                 xs={12}
               >
                 <Button
+                  onClick={authenticateUser}
                   variant="contained"
                   color="primary"
                   className={classes.button}
@@ -79,3 +94,13 @@ const Login = () => {
 };
 
 export default Login;
+
+Login.propTypes = {
+  authenticateUser: PropTypes.func.isRequired,
+  setUserCredentials: PropTypes.func.isRequired,
+  authError: PropTypes.shape({
+    message: PropTypes.string,
+    title: PropTypes.string,
+  }).isRequired
+
+};
