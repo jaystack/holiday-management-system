@@ -62,7 +62,7 @@ export const readJwtToken = createAction(
 
 export const setAuthError = createAction(
   SET_AUTH_ERROR,
-  (error = {}) => error
+  error => error
 );
 
 export const authenticateUser = createAction(
@@ -89,16 +89,17 @@ export const getIsAuthSuccessful = state => state.login.isAuthSuccessful;
 export const getUserCredentials = state => state.login.user;
 export const getAuthError = state => state.login.authError;
 export const getJwtToken = state => state.login.jwtToken;
+export const getIsJwtTokenExists = createSelector(getJwtToken, jwtToken => (!!jwtToken));
 export const getIsAuthenticated = createSelector(getIsAuthSuccessful,
-  getJwtToken,
-  (isAuthSuccessful, jwtToken) => (jwtToken && isAuthSuccessful) === true);
+  getIsJwtTokenExists,
+  (isAuthSuccessful, isJwtTokenExists) => isAuthSuccessful && isJwtTokenExists);
 /**
  * REDUCER
  */
 
 export const reducer = handleActions(
   {
-    [setAuthError]: (state, { payload: error }) => (
+    [setAuthError]: (state, { payload: error = {} }) => (
       {
         ...state,
         authError: error
