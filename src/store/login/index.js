@@ -89,10 +89,14 @@ export const getIsAuthSuccessful = state => state.login.isAuthSuccessful;
 export const getUserCredentials = state => state.login.user;
 export const getAuthError = state => state.login.authError;
 export const getJwtToken = state => state.login.jwtToken;
-export const getIsJwtTokenExists = createSelector(getJwtToken, jwtToken => (!!jwtToken));
-export const getIsAuthenticated = createSelector(getIsAuthSuccessful,
-  getIsJwtTokenExists,
-  (isAuthSuccessful, isJwtTokenExists) => isAuthSuccessful && isJwtTokenExists);
+export const getIsJwtTokenExists = createSelector(
+  getJwtToken,
+  jwtToken => (!!jwtToken)
+);
+export const getIsAuthenticated = createSelector(
+  [getIsAuthSuccessful, getIsJwtTokenExists],
+  (isAuthSuccessful, isJwtTokenExists) => isAuthSuccessful && isJwtTokenExists
+);
 /**
  * REDUCER
  */
