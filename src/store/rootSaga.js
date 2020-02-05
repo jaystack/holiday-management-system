@@ -1,6 +1,6 @@
 import { all, fork } from 'redux-saga/effects';
 import { watchFetchUserData, watchModifyUserData } from './profile';
-import { watchAuthenticateUser, watchValidateJWTToken } from './login';
+import { watchAuthenticateUser, watchValidateJWTToken, watchReadJWTToken } from './login';
 
 export default function* rootSaga() {
   yield all([
@@ -8,5 +8,6 @@ export default function* rootSaga() {
     fork(watchModifyUserData),
     fork(watchAuthenticateUser),
     fork(watchValidateJWTToken),
+    fork(watchReadJWTToken),
   ]);
 }

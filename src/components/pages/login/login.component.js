@@ -12,12 +12,15 @@ import Section from '../../commons/section/section.component';
 import useStyles from './login.styles';
 
 const Login = ({
-  authenticateUser, setUserCredentials, authError, validateJwtToken, jwtToken
+  authenticateUser,
+  setUserCredentials,
+  authError,
+  readJwtToken
 }) => {
   useEffect(() => {
-    if (jwtToken) validateJwtToken(jwtToken);
-  },
-  [validateJwtToken, jwtToken]);
+    readJwtToken();
+  }, [readJwtToken]);
+
   const classes = useStyles();
 
   const handleOnChange = event => {
@@ -108,8 +111,7 @@ export default Login;
 Login.propTypes = {
   authenticateUser: PropTypes.func.isRequired,
   setUserCredentials: PropTypes.func.isRequired,
-  validateJwtToken: PropTypes.func.isRequired,
-  jwtToken: PropTypes.string.isRequired,
+  readJwtToken: PropTypes.func.isRequired,
   authError: PropTypes.shape({
     message: PropTypes.string,
     title: PropTypes.string,

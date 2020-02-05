@@ -13,7 +13,7 @@ import getUserData from '../../api/users';
  */
 
 export const initialState = {
-  jwtToken: localStorage.getItem('jwtToken') || '',
+  jwtToken: '',
   user: {
     email: '',
     password: '',
@@ -29,8 +29,9 @@ export const SET_USER_CREDENTIALS = 'SET_USER_CREDENTIALS';
 
 export const SET_JWT_TOKEN = 'SET_JWT_TOKEN';
 
-
 export const SET_AUTH_ERROR = 'SET_AUTH_ERROR';
+
+export const READ_JWT_TOKEN = 'READ_JWT_TOKEN';
 
 export const AUTHENTICATE_USER = 'AUTHENTICATE_USER';
 
@@ -55,9 +56,13 @@ export const setJwtToken = createAction(
   jwtToken => jwtToken
 );
 
+export const readJwtToken = createAction(
+  READ_JWT_TOKEN
+);
+
 export const setAuthError = createAction(
   SET_AUTH_ERROR,
-  error => error
+  (error = {}) => error
 );
 
 export const authenticateUser = createAction(
@@ -86,8 +91,7 @@ export const getAuthError = state => state.login.authError;
 export const getJwtToken = state => state.login.jwtToken;
 export const getIsAuthenticated = createSelector(getIsAuthSuccessful,
   getJwtToken,
-  (isAuthSuccessful,
-    jwtToken) => jwtToken && isAuthSuccessful === true);
+  (isAuthSuccessful, jwtToken) => (jwtToken && isAuthSuccessful) === true);
 /**
  * REDUCER
  */
@@ -137,6 +141,7 @@ export function* authenticateUserSaga() {
     yield put(setAppWaiting(true));
     const response = yield call(authenticate, email, password);
     const { token: jwtToken } = response.data;
+    yield put(setJwtToken(jwtToken));
     yield call(validateJWTTokenSaga, { payload: jwtToken });
   } catch (err) {
     const { message } = err;
@@ -147,13 +152,22 @@ export function* authenticateUserSaga() {
   }
 }
 
-export function* validateJWTTokenSaga({ payload: jwtToken }) {
+export function* readJWTTokenSaga() {
+  const jwtToken = localStorage.getItem('jwtToken');
+  if (jwtToken) {
+    yield put(setJwtToken(jwtToken));
+    yield call(validateJWTTokenSaga);
+  }
+}
+
+export function* validateJWTTokenSaga() {
   try {
+    const jwtToken = yield select(getJwtToken);
     yield put(setAppWaiting(true));
     yield call(getUserData, jwtToken);
     yield put(setJwtToken(jwtToken));
     yield put(authenticationSuccessful());
-    yield put(setAuthError({}));
+    yield put(setAuthError());
     localStorage.setItem('jwtToken', jwtToken);
     history.push('');
   } catch (err) {
@@ -171,6 +185,10 @@ export function* validateJWTTokenSaga({ payload: jwtToken }) {
 
 export function* watchAuthenticateUser() {
   yield takeLatest(AUTHENTICATE_USER, authenticateUserSaga);
+}
+
+export function* watchReadJWTToken() {
+  yield takeLatest(READ_JWT_TOKEN, readJWTTokenSaga);
 }
 
 export function* watchValidateJWTToken() {

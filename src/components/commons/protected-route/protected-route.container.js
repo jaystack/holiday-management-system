@@ -7,9 +7,7 @@ import ProtectedRoute from './protected-route.component';
 
 const mapStateToProps = state => ({
   isAuthenticated: getIsAuthenticated(state),
-
 });
-
 const mapDispatchToProps = {
 };
 
