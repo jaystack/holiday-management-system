@@ -6,7 +6,7 @@ import { createSelector } from 'reselect';
 import history from '../../side-effects/history';
 import { setAppWaiting } from '../app';
 import authenticate from '../../api/auth';
-import getUserData from '../../api/users';
+import { getUser } from '../../api/users';
 
 /**
  * INITIAL STATE
@@ -169,7 +169,7 @@ export function* validateJWTTokenSaga() {
   try {
     const jwtToken = yield select(getJwtToken);
     yield put(setAppWaiting(true));
-    yield call(getUserData, jwtToken);
+    yield call(getUser, jwtToken);
     yield put(setJwtToken(jwtToken));
     yield put(authenticationSuccessful());
     yield put(setAuthError());

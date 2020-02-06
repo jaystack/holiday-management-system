@@ -1,6 +1,6 @@
 import request from './axios';
 
-const getUserData = jwtToken => request({
+export const getUser = jwtToken => request({
   url: '/users/me',
   method: 'GET',
   headers: {
@@ -8,5 +8,11 @@ const getUserData = jwtToken => request({
   }
 });
 
-
-export default getUserData;
+export const updateUser = (jwtToken, userData) => request({
+  url: '/users/me',
+  method: 'POST',
+  headers: {
+    Authorization: `Bearer ${jwtToken}`
+  },
+  data: userData
+});

@@ -1,6 +1,10 @@
 import { createAction, handleActions } from 'redux-actions';
-import { put, takeLatest, call } from 'redux-saga/effects';
+import {
+  put, takeLatest, call, select
+} from 'redux-saga/effects';
 import { setAppWaiting, addAlert } from '../app';
+import { getJwtToken } from '../login';
+import { getUser, updateUser } from '../../api/users';
 
 /**
  * INITIAL STATE
@@ -66,15 +70,11 @@ export const reducer = handleActions(
 export function* fetchUserDataSaga() {
   yield put(setAppWaiting(true));
   try {
-    yield call(delay, 2000);
-    yield put(addAlert({ title: 'API SUCCESS', desc: 'api success desc', severity: 'success' }));
-    yield put(updateUserData({
-      fullName: 'Daniel Sábic',
-      jobTitle: 'Software Developer',
-      jobLevel: 'Junior',
-      skills: ['nodejs', 'devops'],
-    }));
+    const jwtToken = yield select(getJwtToken);
+    const { data: userData } = yield call(getUser, jwtToken);
+    yield put(updateUserData(userData));
   } catch (err) {
+    console.log(err);
     yield put(addAlert({ title: 'API ERROR', desc: 'api success desc', severity: 'error' }));
   } finally {
     yield put(setAppWaiting(false));
@@ -84,11 +84,12 @@ export function* fetchUserDataSaga() {
 export function* modifyUserDataSaga({ payload: userData }) {
   try {
     yield put(setAppWaiting(true));
+    const jwtToken = yield select(getJwtToken);
+    yield call(updateUser, jwtToken, userData);
     yield put(updateUserData(userData));
-    yield call(delay, 2000);
     yield put(addAlert({ title: 'profile updated', desc: 'profile updated', severity: 'info' }));
   } catch (err) {
-    yield put(addAlert({ title: 'API ERROR', desc: 'api success desc', severity: 'error' }));
+    yield put(addAlert({ title: 'API ERROR', desc: `api error: ${err.message}`, severity: 'error' }));
   } finally {
     yield put(setAppWaiting(false));
   }
